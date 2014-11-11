@@ -1,0 +1,54 @@
+  <div class="setting form-group">
+    <%= label_tag(:settings_ldap_host, 'Host', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :ldap_host, class: 'form-control') %>
+      <span class="help-block">Hostname of the server running LDAP.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_ldap_port, 'Port', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :ldap_port, class: 'form-control') %>
+      <div class="checkbox">
+        <%= label_tag(:settings_ldap_ssl) do %>
+          <%= check_box(:settings, :ldap_ssl) %> Use SSL?
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_ldap_admin_user, 'User', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :ldap_admin_user, class: 'form-control') %>
+      <span class="help-block">User to log in to LDAP.  Example: cn=foouser,dc=example,dc=com.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_ldap_admin_password, 'Password', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= password_field(:settings,
+        :ldap_admin_password,
+        value: controller.scrub_password(:ldap_admin_password),
+        class: 'form-control') %>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_ldap_base, 'Base', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :ldap_base, class: 'form-control') %>
+      <span class="help-block">Root node in LDAP from which to search for users and groups. Example: cn=users,dc=example,dc=com.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_ldap_attribute, 'Attribute', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :ldap_attribute, class: 'form-control') %>
+      <span class="help-block">LDAP username attribute.</span>
+    </div>
+  </div>
+

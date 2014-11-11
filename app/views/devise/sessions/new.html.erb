@@ -1,0 +1,27 @@
+<% title "Sign In" %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-signin'}) do |f| %>
+  <h2 class="form-signin-heading">Sign in</h2>
+  <p class="help-block">Sign in using your active directory credentials.</p>
+
+  <%= f.text_field :username,
+    autofocus: true,
+    placeholder: "Username or email address",
+    required: true,
+    class: 'form-control' %>
+  <%= f.password_field :password,
+    autocomplete: 'off',
+    placeholder: "Password",
+    class: 'form-control' %>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="checkbox">
+      <%= f.label :remember_me do %>
+        <%= f.check_box :remember_me %>Remember me?
+      <% end %>
+    </div>
+  <% end -%>
+
+  <%= f.submit "Sign in", class: 'btn btn-lg btn-primary btn-block' %>
+<% end %>
+
+<%= render "devise/shared/links" %>

@@ -1,0 +1,7 @@
+<% title @github_user.login %>
+<% nav_section :github_users %>
+<% jumbotron do %>
+  <h1><%= @github_user.login %></h1>
+<% end %>
+
+<%= render partial: 'users/github_user', locals: {github_user: @github_user} %>

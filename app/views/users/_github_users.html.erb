@@ -1,0 +1,8 @@
+<section class="github-accounts">
+  <h2><%= 'GitHub Account'.pluralize(user.github_users.size) %></h2>
+  <% if user.github_users.empty? %>
+    <p>No linked GitHub accounts.</p>
+  <% else %>
+    <%= render partial: 'users/github_user', collection: user.github_users.order(updated_at: :desc) %>
+  <% end %>
+</section><!-- /.github-accounts -->

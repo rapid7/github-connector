@@ -1,0 +1,13 @@
+/.bundle
+/cookbook/.kitchen
+/config/database.yml
+/config/secrets.yml
+/coverage
+/doc
+/ldap/slapd-test.conf
+/ldap/openldap-data
+/log/*.log
+/public/assets
+/public/favicon.ico
+/tmp
+/.yardoc

@@ -1,0 +1,23 @@
+<% title "Setup Wizard" %>
+<% nav_section :settings %>
+<% jumbotron do %>
+  <h1>Setup Wizard</h1>
+  <p>Step 5: Email settings</p>
+<% end %>
+
+<p>The Github Connector sends emails when disabling Github access.  Configure your SMTP settings below.</p>
+
+<%= form_tag({action: :update}, method: :put, class: 'form-horizontal max-col-sm') do %>
+  <% if @error %>
+    <div class="alert alert-danger"><%= @error %></div>
+  <% end %>
+
+  <h2>Email</h2>
+  <%= render 'settings/email' %>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= submit_tag('Next', class: 'btn btn-default btn-primary') %>
+    </div>
+  </div>
+<% end %>

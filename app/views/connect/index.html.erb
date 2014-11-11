@@ -1,0 +1,159 @@
+<% title "Add GitHub Account" %>
+<% nav_section :connect %>
+<% jumbotron do %>
+  <h1>Add GitHub Account</h1>
+  <p>Connect your GitHub.com account<%= " to #{settings.company}" if settings.company.present? %></p>
+<% end %>
+
+<h2>Adding a GitHub.com account</h2>
+
+<p>Connecting a GitHub account to <%= settings.company.present? ? settings.company : "Active Directory" %> establishes an OAuth connection between your account on GitHub.com and the <%= settings.company || "" %> GitHub Connector.  This allows <%= settings.company.present? ? settings.company : "us" %> to view certain attributes of your GitHub account (email address, public ssh keys, etc.) to ensure they meet our policy.  It also allows <%= settings.company.present? ? settings.company : "us" %> to control organization memberships.</p>
+
+<p>To get started, follow these steps:</p>
+
+
+<div id="connect-steps" class="connect-steps<%= ' inprogress' if @connect_status.in_progress? %>">
+
+<ul class="list-group max-col-sm">
+
+  <%= render layout: 'connect_step', locals: {step: :create} do %>
+    <h4>Step 1: Create GitHub account</h4>
+    <p>Create a <a href="https://github.com/join">free GitHub.com account</a> if you don't already have one.</p>
+    <% if settings.github_user_requirements %>
+      <p>Your GitHub account must meet the following requirements:</p>
+      <ul>
+        <% settings.github_user_requirements.each do |req| %>
+          <li><%=raw Sanitize.fragment(req, Sanitize::Config::BASIC) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+
+
+  <%= render layout: 'connect_step', locals: {step: :request} do %>
+    <h4>Step 2: Request GitHub permissions</h4>
+
+    <p>
+      <% if @connect_status.step == :request %>
+        Click the <strong>Request Permissions</strong> button below.
+      <% else %>
+        Request permissions from your GitHub account.
+      <% end %>
+      This will take you to GitHub and ask you to authorize the GitHub Connector application.  Ensure that you are logged in to GitHub with the account from Step 1 before starting this process.
+    </p>
+
+    <% if @connect_status.step == :request %>
+      <p><%= link_to 'Request Permissions', {action: 'start'}, class: 'btn btn-primary' %></p>
+    <% end %>
+  <% end %>
+
+
+  <%= render layout: 'connect_step', locals: {step: :grant} do %>
+    <h4>Step 3: Grant GitHub permissions</h4>
+
+    <% if @connect_status.step_error?(:grant) %>
+      <div class="alert alert-danger">
+        <p>An error occurred while authenticating with GitHub.  Please <%= link_to "try again", {action: 'start'} %>.</p>
+        <% if @connect_status.error_message %>
+          <p><%= @connect_status.error_message %></p>
+        <% end %>
+      </div>
+    <% elsif @connect_status.step == :grant && @connect_status.status == :queued %>
+      <div class="alert alert-info">
+        <p>Waiting for an available GitHub worker...</p>
+      </div>
+    <% elsif @connect_status.step == :grant && @connect_status.in_progress? %>
+      <div class="alert alert-info">
+        <p>Authenticating with GitHub...</p>
+      </div>
+    <% elsif @connect_status.step_complete?(:grant) && @connect_status.github_user %>
+      <div class="alert alert-success">
+        <p>Authenticated as <strong><%= @connect_status.github_user.login %></strong>.</p>
+      </div>
+    <% end %>
+
+    <p>On the GitHub page, click the <strong>Authorize application</strong> button.  GitHub will return you to the GitHub Connector to complete the process.</p>
+  <% end %>
+
+
+  <%= render layout: 'connect_step', locals: {step: :add} do %>
+    <h4>Step 4: Add to<%= " #{settings.company}" if settings.company.present? %> <%= "organization".pluralize((settings.github_orgs || []).count) %></h4>
+
+    <% if @connect_status.step_error?(:add) %>
+      <div class="alert alert-danger">
+        <% if @connect_status.github_user %>
+          <p>Sorry, your GitHub account cannot be added due to the following <%= "error".pluralize(@connect_status.github_user.failing_rules.count) %>:</p>
+          <ul>
+            <% @connect_status.github_user.failing_rules.each do |rule| %>
+              <li><%= rule.error_msg %></li>
+            <% end %>
+          </ul>
+          <p>Please correct these errors and <%= link_to "try again", {action: 'start'} %>.</p>
+        <% elsif @connect_status.error_message %>
+          <p><%= @connect_status.error_message %></p>
+        <% else %>
+          <p>An unknown error occurred.  Please <%= link_to "try again", {action: 'start'} %> again.</p>
+        <% end %>
+      </div>
+    <% elsif @connect_status.step == :add && @connect_status.status == :running %>
+      <div class="alert alert-info">
+        <p>Synchronizing<%= " #{settings.company}" if settings.company.present? %> <%= "organization".pluralize((settings.github_orgs || []).count) %>...</p>
+      </div>
+    <% elsif @connect_status.step_complete?(:add) %>
+      <div class="alert alert-success">
+        <p>You GitHub user, <strong><%= @connect_status.github_user.login %></strong>, is a member of the following organizations:</p>
+        <ul>
+          <% @connect_status.github_user.organizations.each do |github_org| %>
+            <li><a href="https://github.com/<%= github_org %>"><%= github_org %></a></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <p>You will be added to the <%= " #{settings.company}" if settings.company.present? %> GitHub <%= "organization".pluralize((settings.github_orgs || []).count) %>.</p>
+  <% end %>
+
+
+  <%= render layout: 'connect_step', locals: {step: :teams} do %>
+    <h4>Step 5: Add to<%= " #{settings.company}" %> GitHub teams</h4>
+
+    <% if @connect_status.step == :teams && @connect_status.github_user %>
+      <div class="alert alert-success">
+        <p>Your GitHub user, <strong><%= @connect_status.github_user.login %></strong>, is a member of the following <%= "team".pluralize(@connect_status.github_user.teams.count) %>:</p>
+        <ul>
+          <% @connect_status.github_user.teams.each do |team| %>
+            <li><%= link_to team.full_slug, "https://github.com/orgs/#{team.organization}/teams/#{team.slug}/repositories" %></li>
+          <% end %>
+        </ul>
+      </div>
+
+      <p>If you need additional access, contact your <%= settings.company %> GitHub administrator.</p>
+
+    <% else %>
+      <p>You will be automatically added to certain GitHub teams.  If you need additional access, contact your <%= settings.company %> GitHub administrator.</p>
+    <% end %>
+  <% end %>
+</ul>
+
+<% if @connect_status.complete? %>
+  <h3>Success!</h3>
+  <p>You've successfully added your GitHub account.  Visit GitHub.com to view repositories:</p>
+  <p><%= link_to "Visit#{" #{settings.company} on" if settings.company.present?} GitHub.com", "https://github.com/#{settings.github_orgs.first if settings.github_orgs}", class: 'btn btn-primary' %></p>
+  <p><strong>Note:</strong> You may safely ignore any email invitiations from GitHub asking you to join the Rapid7 <%= "organization".pluralize((settings.github_orgs || []).count) %>.</p>
+<% end %>
+
+<% if @connect_status.in_progress? %>
+  <script type="text/javascript">
+    var reloadConnectSteps = function() {
+      $.ajax({
+        url: "<%= url_for %>"
+      }).done(function (data) {
+        var content = $(data).find('#connect-steps');
+        $('#connect-steps').replaceWith(content);
+      });
+    }
+    setTimeout(reloadConnectSteps, 1000);
+  </script>
+<% end %>
+
+</div><!-- .connect-steps -->

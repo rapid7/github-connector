@@ -1,0 +1,18 @@
+<% jumbotron do %>
+  <h1>GitHub Connector</h1>
+  <p>Connect your GitHub.com account(s) to <%= settings.company.present? ? settings.company : "Active Directory" %></p>
+  <% if current_user.github_users.empty? %>
+    <%= link_to("Connect your GitHub.com account", connect_path, class: "btn btn-default btn-lg") %>
+  <% else %>
+    <%= link_to("Add another GitHub.com account", connect_path, class: "btn btn-default btn-lg") %>
+  <% end %>
+<% end %>
+
+
+<%= render partial: 'users/github_users', locals: {user: current_user} %>
+
+<% if current_user.github_users.empty? %>
+  <%= link_to('Connect your GitHub Account', connect_path, class: 'btn btn-default') %>
+<% else %>
+  <%= link_to('Add another GitHub Account', connect_path, class: 'btn btn-default') %>
+<% end %>

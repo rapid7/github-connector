@@ -1,0 +1,14 @@
+dn: cn=Lisa Simpson,dc=example,dc=com
+changetype: delete
+
+dn: cn=Bart Simpson,dc=example,dc=com
+changetype: delete
+
+dn: cn=Marge Simpson,dc=example,dc=com
+changetype: delete
+
+dn: cn=Homer Simpson,dc=example,dc=com
+changetype: delete
+
+dn: dc=example,dc=com
+changetype: delete

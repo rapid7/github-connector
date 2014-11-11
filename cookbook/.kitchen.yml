@@ -1,0 +1,38 @@
+---
+driver:
+  name: vagrant
+  customize:
+    memory: 1024
+    # Use the host's DNS.  This ensures everything resolves correctly
+    # inside the guest when the host is connected to VPN.
+    natdnshostresolver1: 'on'
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: default
+    driver:
+      network:
+        - [forwarded_port, {guest: 8080, host: 8080}]
+        - [forwarded_port, {guest: 8443, host: 8443}]
+    data_bags_path: test_data_bags
+    run_list:
+      - recipe[github_connector::default]
+    attributes:
+      authorization:
+        sudo:
+          users: [vagrant]
+          agent_forwarding: true
+      postgresql:
+        password:
+          postgres: insecurepassword
+      github_connector:
+        http:
+          port: 8080
+          ssl:
+            port: 8443
+            enabled: true

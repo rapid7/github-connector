@@ -1,0 +1,60 @@
+<section class="github-account">
+  <h3>
+    <a name="<%= github_user.login %>"></a>
+    <%= link_to github_user.html_url do %>
+      <%= image_tag(github_user.avatar_url, height: 32, width: 32) %>
+      <%= github_user.login %>
+    <% end %>
+  </h3>
+
+  <table class="table max-col-sm">
+    <tr>
+      <th class="col-sm-2">State</th>
+      <td><%= github_user_state_label(github_user) %></td>
+    </tr>
+
+    <tr>
+      <th><%= 'Email'.pluralize(github_user.emails.size) %></th>
+      <td>
+        <ul class="list-unstyled">
+          <% github_user.emails.each do |email| %>
+            <li><%= email.address %></li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <th>2FA</th>
+      <td><%= github_user.mfa ? "Yes" : "No" %></td>
+    </tr>
+
+    <tr>
+      <th><%= 'Team'.pluralize(github_user.teams.size) %></th>
+      <td>
+        <ul class="list-unstyled">
+          <% github_user.teams.each do |team| %>
+            <li><%= link_to team.full_slug, "https://github.com/orgs/#{team.organization}/teams/#{team.slug}/repositories" %></li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Last sync</th>
+      <td><%= format_time(github_user.last_sync_at) %></td>
+    </tr>
+
+    <% if github_user.sync_error %>
+      <tr>
+        <th>Sync error</th>
+        <td>
+          <%= github_user.sync_error %>
+          <br />
+          <%= format_time(github_user.sync_error_at) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</section><!-- /.github-account -->
+

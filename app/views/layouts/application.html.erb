@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    <% if content_for?(:title) -%>
+      <%= yield :title %> - GitHub Connector
+    <% else -%>
+      GitHub Connector
+    <% end -%>
+  </title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="<%= controller.controller_name %> <%= controller.action_name %>">
+
+<!-- Static navbar -->
+<% nav_section = yield(:nav_section).to_sym %>
+<nav class="navbar navbar-default navbar-static-top gh-main-nav" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#gh-main-nav-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to "GitHub Connector", root_path, class: 'navbar-brand' %>
+    </div><!-- /.navbar-header -->
+
+    <div class="navbar-collapse collapse" id="gh-main-nav-collapse">
+      <ul class="nav navbar-nav">
+        <% if settings.configured? && user_signed_in? %>
+          <li<%=raw ' class="active"' if nav_section == :connect %>>
+            <%= link_to('Add Account', connect_path) %>
+          </li>
+          <% if current_user.admin? %>
+            <li<%=raw ' class="active"' if nav_section == :users %>>
+              <%= link_to('Users', users_path) %>
+            </li>
+            <li<%=raw ' class="active"' if nav_section == :github_users %>>
+              <%= link_to('GitHub Users', github_users_path) %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <% if settings.configured? %>
+          <% if user_signed_in? %>
+            <li<%=raw ' class="active"' if nav_section == :user %>>
+              <%= link_to(current_user_path, title: current_user.name) do %>
+                <span class="glyphicon glyphicon-user"></span>
+                <span class="nav-sm-hide"><%= current_user.name %></span>
+              <% end %>
+            </li>
+            <% if current_user.admin? %>
+              <li<%=raw ' class="active"' if nav_section == :settings %>>
+                <%= link_to(settings_path, title: 'Settings') do %>
+                  <span class="glyphicon glyphicon-cog"></span>
+                  <span class="nav-sm-hide">Settings</span>
+                <% end %>
+              </li>
+            <% end %>
+            <li>
+              <%= link_to(destroy_user_session_path, :method => :delete, title: 'Logout') do %>
+                <span class="glyphicon glyphicon-log-out"></span>
+                <span class="nav-sm-hide">Logout</span>
+              <% end %>
+            </li>
+          <% else %>
+            <% unless current_page?(new_user_session_path) %>
+              <li>
+              <%= link_to('Login', new_user_session_path)  %>
+              </li>
+            <% end %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div><!-- /.nav-collapse -->
+  </div><!-- /.container -->
+</nav>
+
+<% if content_for?(:jumbotron) %>
+<header class="jumbotron">
+  <div class="container">
+    <%= yield :jumbotron %>
+  </div>
+</header>
+<% end %>
+
+<div class="container gh-main-content">
+<% if notice && !notice.empty? %><p class="alert alert-success"><%= notice %></p><% end %>
+<% if alert && !alert.empty? %><p class="alert alert-danger"><%= alert %></p><% end %>
+<%= yield %>
+</div><!-- /.container -->
+
+</body>
+</html>

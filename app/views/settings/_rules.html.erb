@@ -1,0 +1,63 @@
+  <div class="setting form-group">
+    <%= label_tag(:settings_enforce_rules, 'Enforce', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <div class="checkbox">
+        <%= label_tag(:settings_enforce_rules) do %>
+          <%= check_box(:settings, :enforce_rules) %> Enforce rules?
+        <% end %>
+      </div>
+      <span class="help-block">If checked, GitHub users will be removed or restricted to external teams depending on their state.  If unchecked, the GitHub connector runs in dry-run mode - no changes to GitHub users will be made.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_user_requirements, 'User requirements', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_area(:settings,
+        :github_user_requirements,
+        value: @settings.github_user_requirements ? @settings.github_user_requirements.join("\r\n") : nil,
+        class: 'form-control') %>
+      <span class="help-block">A list of user requirements, one per line.  These will be displayed to users when adding new GitHub accounts.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_rule_email_regex, 'Email regex', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :rule_email_regex, class: 'form-control') %>
+      <span class="help-block">Regular expression used to validate GitHub email addresses.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_rule_max_sync_age, 'Max sync age', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <%= text_field(:settings, :rule_max_sync_age, class: 'form-control') %>
+        <span class="input-group-addon">seconds</span>
+      </div>
+      <span class="help-block">Max time since last successful GitHub and Active Directory synchronization before disabling users.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_exclude_users, 'Exclude Users', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_area(:settings,
+        :github_exclude_users,
+        value: @settings.github_exclude_users ? @settings.github_exclude_users.join("\r\n") : nil,
+        class: 'form-control') %>
+      <span class="help-block">GitHub users, one username per line, to exclude when removing users.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_external_teams, 'External Teams', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_area(:settings,
+        :github_external_teams,
+        value: @settings.github_external_teams ? @settings.github_external_teams.join("\r\n") : nil,
+        class: 'form-control') %>
+      <span class="help-block">GitHub teams, one slug per line, that allow external users.</span>
+    </div>
+  </div>

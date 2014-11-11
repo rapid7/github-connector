@@ -1,0 +1,61 @@
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_client_id, 'Client ID', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :github_client_id, class: 'form-control') %>
+      <span class="help-block">GitHub OAuth application client ID.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_client_secret, 'Client secret', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :github_client_secret, class: 'form-control') %>
+      <span class="help-block">GitHub OAuth application client secret.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_admin_token, 'Admin token', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <%= password_field(:settings,
+          :github_admin_token,
+          value: @settings.github_admin_token ? controller.scrub_password(:github_admin_token) : nil,
+          class: 'form-control') %>
+        <span class="input-group-btn">
+          <%= button_tag "Connect to my GitHub", class: 'btn btn-default', name: 'connect_github', value: 'connect' %>
+        </span>
+      </div>
+      <span class="help-block">A GitHub user OAuth token used for synchronizing organizations.  The connect button will authorize your GitHub account.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_orgs, 'Organizations', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_area(:settings,
+        :github_orgs,
+        value: @settings.github_orgs ? @settings.github_orgs.join("\r\n") : nil,
+        class: 'form-control') %>
+      <span class="help-block">GitHub organizations, one slug per line, to manage with this connector.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_check_mfa_team, '2FA team', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field(:settings, :github_check_mfa_team, class: 'form-control') %>
+      <span class="help-block">A GitHub team with no privileges used to check 2FA for new users.  When a GitHub user is first added, they will be temporarily added to this team so we can check 2FA status.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_default_teams, 'Default teams', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_area(:settings,
+        :github_default_teams,
+        value: @settings.github_default_teams ? @settings.github_default_teams.join("\r\n") : nil,
+        class: 'form-control') %>
+      <span class="help-block">GitHub teams, one slug per line, all users should belong to.</span>
+    </div>
+  </div>

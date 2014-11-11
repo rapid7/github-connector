@@ -1,0 +1,18 @@
+<%
+  classes = %w(list-group-item step-request)
+  classes << 'disabled' if @connect_status.step_disabled?(step)
+  if @connect_status.step_error?(step)
+    classes << 'error'
+  else
+    classes << 'complete' if @connect_status.step_complete?(step)
+    classes << 'active' if @connect_status.step == step
+  end
+%>
+
+<li class="<%= classes.join(' ') %>">
+  <i class="step-icon step-icon-loading fa fa-refresh fa-spin"></i>
+  <span class="step-icon step-icon-active glyphicon glyphicon-arrow-right"></span>
+  <span class="step-icon step-icon-complete glyphicon glyphicon-ok"></span>
+  <span class="step-icon step-icon-error glyphicon glyphicon-remove"></span>
+  <%= yield %>
+</li>

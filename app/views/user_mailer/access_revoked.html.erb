@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>GitHub access revoked!</h1>
+    <p>
+      Your <%= Rails.application.settings.company %> GitHub access has
+      been revoked due to the following <%= "error".pluralize(@github_user.failing_rules.count) %>:
+    </p>
+    <ul>
+      <% @github_user.failing_rules.each do |rule| %>
+        <li><%= rule.error_msg %></li>
+      <% end %>
+    </ul>
+
+    <p>
+      Please correct the <%= "error".pluralize(@github_user.failing_rules.count) %>
+      and reconnect your GitHub account using this link:
+      <%= link_to(connect_url, connect_url) %>
+    </p>
+
+    <p style="font-size: 80%; color: #888;">This message was sent from an automated mailbox.  Please do not reply.</p>
+  </body>
+</html>

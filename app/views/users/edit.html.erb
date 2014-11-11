@@ -1,0 +1,28 @@
+<% title @user.name %>
+<% jumbotron do %>
+  <h1><%= @user.name %></h1>
+<% end %>
+
+<%= form_for :user,
+      url: user_path(@user),
+      method: :patch,
+      html: {
+        class: 'form-horizontal max-col-sm'
+      } do |f| %>
+
+  <div class="form-group">
+    <%= f.label :admin, class: 'control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.check_box :admin %>
+      <span class="help-block">Allows the user to administer the GitHub Connector application.</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit class: 'btn btn-default btn-primary' %>
+      <%= link_to "Cancel", @user, class: 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

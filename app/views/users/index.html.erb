@@ -1,0 +1,44 @@
+<% title "Users" %>
+<% nav_section :users %>
+<% jumbotron do %>
+  <h1>Users</h1>
+  <p>Active Directory users who have logged in to the GitHub Connector</p>
+<% end %>
+
+<%
+  # Users can have more than one GitHub user, which we want to display like:
+  #
+  # LDAP User  |  GitHub User  |  State
+  # -----------+---------------+---------
+  # User 1     |  GH User 1a   |  Enabled
+  #            |  GH User 1b   |  Enabled
+  # User 2     |  GH User 2    |  Enabled
+  # User 3     |               |
+%>
+<table class="table table-condensed max-col-sm">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>GitHub Account</th>
+      <th>State</th>
+    </tr>
+  </thead>
+  <% @users.each do |user| %>
+    <% github_users = user.github_users.empty? ? [nil] : user.github_users %>
+    <% github_users.each_with_index do |ghuser, i| %>
+      <tr>
+        <% if i == 0 %>
+          <td rowspan="<%= github_users.count %>">
+            <%= link_to(user.name, user) %>
+          </td>
+        <% end %>
+        <% if ghuser %>
+          <td><%= link_to ghuser.login, user_path(user, anchor: ghuser.login) %></td>
+          <td><%= github_user_state_label(ghuser) %></td>
+        <% else %>
+          <td colspan="2">None</td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

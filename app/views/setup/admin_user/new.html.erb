@@ -1,0 +1,24 @@
+<% title "Create admin user - Setup Wizard" %>
+<% nav_section :settings %>
+<% jumbotron do %>
+  <h1>Setup Wizard</h1>
+  <p>Step 3: Create initial admin user</p>
+<% end %>
+
+
+<p>Create the initial admin user by signing in with your Active Directory credentials.  This user will become an administrator for the GitHub Connector.</p>
+
+<%= form_for(resource, as: resource_name, url: setup_admin_path, html: {class: 'form-signin left'}) do |f| %>
+
+  <%= f.text_field :username,
+    autofocus: true,
+    placeholder: "Username or email address",
+    required: true,
+    class: 'form-control' %>
+  <%= f.password_field :password,
+    autocomplete: 'off',
+    placeholder: "Password",
+    class: 'form-control' %>
+
+  <%= f.submit "Create admin user", class: 'btn btn-lg btn-primary btn-block' %>
+<% end %>

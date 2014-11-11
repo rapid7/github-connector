@@ -1,0 +1,50 @@
+# THIS FILE IS MANAGED BY CHEF
+# Local modifications will be discarded.
+
+upstream github_connector_server {
+  server unix://<%= @install_dir %>/tmp/sockets/puma.sock fail_timeout=0;
+}
+
+<% if @redirect_http %>
+server {
+  listen       <%= @listen_port %>;
+  server_name  <%= @host_name %> <%= @host_aliases.join(' ') %>;
+  rewrite      ^(.*) https://$host<%= ":#{@ssl_listen_port}" unless @ssl_listen_port == 443 %>$1 permanent;
+  }
+<% end -%>
+
+server {
+<% if @ssl_enabled -%>
+  listen       <%= @ssl_listen_port %>;
+<% else -%>
+  listen       <%= @listen_port %>;
+<% end -%>
+
+  server_name  <%= @host_name %> <%= @host_aliases.join(' ') %>;
+  root         <%= @install_dir %>/public;
+
+  keepalive_timeout 5s;
+
+<% if @ssl_enabled -%>
+  ssl on;
+  ssl_certificate     /etc/ssl/certs/<%= @host_name %>.crt;
+  ssl_certificate_key /etc/ssl/private/<%= @host_name %>.key;
+
+  ssl_protocols             TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers               EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+  ssl_prefer_server_ciphers on;
+
+  ssl_session_cache   shared:SSL:10m;
+  ssl_session_timeout 10m;
+<% end -%>
+
+  try_files $uri/index.html $uri.html $uri @app;
+
+  location @app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://github_connector_server;
+  }
+}

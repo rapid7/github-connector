@@ -1,0 +1,4 @@
+{
+  "id": "ssh",
+  "private_key": "-----BEGIN RSA PRIVATE KEY-----\nTHIS_IS_A_FAKE_KEY\n-----END RSA PRIVATE KEY-----\n"
+}

@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby
+
+require 'erb'
+require 'fileutils'
+require 'open3'
+
+FileUtils.chdir(File.dirname(__FILE__))
+
+## For OSX:
+ENV['PATH'] = "#{ENV['PATH']}:/usr/libexec"
+
+template = File.read('slapd-test.conf.erb')
+normal_out = 'slapd-test.conf'
+
+File.open(normal_out, 'w') do |f|
+  f.write ERB.new(template).result(binding)
+end
+
+cmd = "slapd -d 32768 -f #{normal_out} -h ldap://localhost:3268"
+
+started = false
+@slap_pid = nil
+slap_thread = Thread.new do
+  Thread.current.abort_on_exception = true
+  Open3.popen2(cmd) do |stdin, stdout, wait_thr|
+    @slap_pid = wait_thr.pid
+    stdin.close
+    begin
+      while data = stdout.readpartial(1024)
+        print data
+      end
+    rescue EOFError
+      # Ignore EOF
+    end
+    stdout.close
+    exit_status = wait_thr.value
+  end
+end
+
+def kill_slapd
+  if @slap_pid
+    Process.kill('TERM', @slap_pid) rescue nil
+  end
+end
+
+Signal.trap('INT') { kill_slapd }
+Signal.trap('TERM') { kill_slapd }
+
+begin
+  # TODO: Better test for slapd started
+  sleep 0.5
+
+  if slap_thread.alive?
+    ldap_connect_string = "-x -H ldap://localhost:3268 -D 'cn=admin,dc=example,dc=com' -w secret"
+    system("ldapmodify #{ldap_connect_string} -f clear.ldif")
+    system("ldapadd #{ldap_connect_string} -f base.ldif")
+  end
+
+  slap_thread.join
+ensure
+  kill_slapd
+end
+

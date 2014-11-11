@@ -1,0 +1,17 @@
+GitHub access revoked!
+======================
+
+Your <%= Rails.application.settings.company %> GitHub access has been revoked
+due to the following <%= "error".pluralize(@github_user.failing_rules.count) %>:
+
+<% @github_user.failing_rules.each do |rule| -%>
+* <%= rule.error_msg %>
+<% end -%>
+
+Please correct the <%= "error".pluralize(@github_user.failing_rules.count) %> and reconnect your GitHub
+account using this link:
+<%= connect_url %>
+
+
+---
+This message was sent from an automated mailbox.  Please do not reply.

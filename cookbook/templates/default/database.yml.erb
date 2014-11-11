@@ -1,0 +1,22 @@
+# THIS FILE IS MANAGED BY CHEF
+# Local modifications will be discarded.
+
+development: &default
+  adapter: postgresql
+  host: <%= node['github_connector']['db']['host'] %>
+  port: <%= node['github_connector']['db']['port'] %>
+  database: <%= node['github_connector']['db']['name'] %>
+  user: <%= node['github_connector']['db']['user'] %>
+  password: "<%= GithubConnector::Helpers.database_password(node) %>"
+  pool: 25
+  timeout: 5
+
+production:
+  <<: *default
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: github_connector_test

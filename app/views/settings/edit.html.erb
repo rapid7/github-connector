@@ -1,0 +1,32 @@
+<% title "Settings" %>
+<% nav_section :settings %>
+<% jumbotron do %>
+  <h1>Settings</h1>
+  <p>Active Directory, GitHub and application settings</p>
+<% end %>
+
+<%= form_tag({action: :update}, method: :put, class: 'form-horizontal max-col-sm') do %>
+  <% if @error %>
+    <div class="alert alert-danger"><%= @error %></div>
+  <% end %>
+
+  <%= render 'company' %>
+
+  <h2>Active Directory</h2>
+  <%= render 'active_directory' %>
+
+  <h2>GitHub</h2>
+  <%= render 'github' %>
+
+  <h2>Rules</h2>
+  <%= render 'rules' %>
+
+  <h2>Email</h2>
+  <%= render 'email' %>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= submit_tag('Save', class: 'btn btn-default btn-primary') %>
+    </div>
+  </div>
+<% end %>

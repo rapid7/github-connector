@@ -1,0 +1,13 @@
+# THIS FILE IS MANAGED BY CHEF
+# Local modifications will be discarded.
+
+description "GitHub Connector Worker"
+
+start on runlevel [2]
+stop on runlevel [016]
+
+setuid <%= node['github_connector']['user'] %>
+chdir <%= node['github_connector']['install_dir'] %>
+exec env HOME=<%= @home_path %> RAILS_ENV=production <%= @rvm_path %>/bin/rvm <%= node['github_connector']['rvm_alias'] %> do <%= node['github_connector']['install_dir'] %>/bin/delayed_job run
+
+respawn

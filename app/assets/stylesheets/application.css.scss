@@ -1,0 +1,70 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *=require_self
+ *=require_tree
+ */
+$container-large-desktop: 970px;
+@import "compass/css3";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome";
+
+.gh-main-nav {
+  margin-bottom: 0;
+}
+
+.gh-main-content {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  &::before {
+    display: block;
+    content: "";
+  }
+}
+
+.max-col-xs { max-width: 360px; }
+.max-col-sm { max-width: $container-sm; }
+.max-col-md { max-width: $container-md; }
+.max-col-lg { max-width: $container-lg; }
+
+.jumbotron {
+  $jumbotron-color: darken($brand-primary, 15%);
+
+  padding: 20px 0;
+  margin-bottom: 0;
+  color: lighten($brand-primary, 40%);
+  @include single-text-shadow(0, 1px, 0, false, rgba(black, 0.1));
+  @include background-image(linear-gradient(bottom, $jumbotron-color, darken($jumbotron-color, 5%)));
+
+  h1 {
+    color: white;
+    font-size: 50px;
+    margin-top: 0;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  .btn-default {
+    color: white;
+    background-color: transparent;
+    &:hover {
+      color: $jumbotron-color;
+      background-color: white;
+    }
+  }
+}
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  .nav-sm-hide {
+    display: none;
+  }
+}

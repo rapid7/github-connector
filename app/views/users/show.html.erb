@@ -1,0 +1,21 @@
+<% title @user.name %>
+<% nav_section :user if @user == current_user %>
+<% jumbotron do %>
+  <h1><%= @user.name %></h1>
+<% end %>
+
+<%= render partial: 'users/ldap_user', locals: {user: @user} %>
+<%= render partial: 'users/github_users', locals: {user: @user} %>
+
+<h2>Internal</h2>
+
+<table class="table max-col-sm">
+  <tr>
+    <th class="col-sm-2">Admin</th>
+    <td><%= @user.admin? ? 'Yes' : 'No' %></td>
+  </tr>
+</table>
+
+<% if current_user.admin? %>
+  <%= link_to "Edit", edit_user_path(@user), class: 'btn btn-default' %>
+<% end %>

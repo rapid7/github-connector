@@ -1,0 +1,32 @@
+<section class="ldap-account">
+  <h2>Active Directory</h2>
+
+  <table class="table max-col-sm user-table">
+    <tr>
+      <th class="col-sm-2">Username</th>
+      <td><%= user.username %></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td><%= @user.email %></td>
+    </tr>
+    <tr>
+      <th>Flags</th>
+      <td><%= @user.ldap_account_control_flags.map {|flag| flag.to_s.humanize}.join(', ') %></td>
+    </tr>
+    <tr>
+      <th>Last sync</th>
+      <td><%= format_time(@user.last_ldap_sync) %></td>
+    </tr>
+    <% if @user.ldap_sync_error %>
+      <tr>
+        <th>Sync error</th>
+        <td>
+          <%= @user.ldap_sync_error %>
+          <br />
+          <%= format_time(@user.ldap_sync_error_at) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</section>

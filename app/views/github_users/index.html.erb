@@ -1,0 +1,29 @@
+<% title "GitHub Users" %>
+<% nav_section :github_users %>
+<% jumbotron do %>
+  <h1>GitHub Users</h1>
+  <p>GitHub users associated with <%= settings.company.present? ? settings.company : 'our' %> GitHub organizations</p>
+<% end %>
+
+<table class="table table-condensed max-col-sm">
+  <thead>
+    <tr>
+      <th>GitHub Account</th>
+      <th>Active Directory User</th>
+      <th>State</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @github_users.each do |ghuser| %>
+      <tr>
+        <td><%= link_to(ghuser.login, ghuser) %></td>
+        <td>
+          <% if ghuser.user %>
+            <%= link_to(ghuser.user.name, ghuser.user) %>
+          <% end %>
+        </td>
+        <td><%= github_user_state_label(ghuser) %></th>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

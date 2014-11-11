@@ -1,0 +1,23 @@
+<% title "Setup Wizard" %>
+<% nav_section :settings %>
+<% jumbotron do %>
+  <h1>Setup Wizard</h1>
+  <p>Step 2: Active Directory settings</p>
+<% end %>
+
+<p>The Github Connector connects to Active Directory using a service account to read information about employees.  Enter your Active Directory settings below.</p>
+
+<%= form_tag({action: :update}, method: :put, class: 'form-horizontal max-col-sm') do %>
+  <% if @error %>
+    <div class="alert alert-danger"><%= @error %></div>
+  <% end %>
+
+  <h2>Active Directory</h2>
+  <%= render 'settings/active_directory' %>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= submit_tag('Test and Next', class: 'btn btn-default btn-primary') %>
+    </div>
+  </div>
+<% end %>

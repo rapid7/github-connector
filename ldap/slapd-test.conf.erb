@@ -1,0 +1,44 @@
+#
+# See slapd.conf(5) for details on configuration options.
+# This file should NOT be world readable.
+#
+<% ldapdir = RUBY_PLATFORM.match(/linux/) ? 'ldap' : 'openldap' %>
+include		/etc/<%= ldapdir %>/schema/core.schema
+include		/etc/<%= ldapdir %>/schema/cosine.schema
+include		/etc/<%= ldapdir %>/schema/inetorgperson.schema
+#include		/etc/<%= ldapdir %>/schema/nis.schema
+#include		/etc/<%= ldapdir %>/schema/microsoft.std.schema
+#include		/etc/<%= ldapdir %>/schema/microsoft.schema
+
+## Local definitions
+include   <%= File.expand_path('local.schema', @conf_root) %>
+
+# Allow LDAPv2 client connections.  This is NOT the default.
+allow bind_v2
+
+# Do not enable referrals until AFTER you have a working directory
+# service AND an understanding of referrals.
+#referral	ldap://root.openldap.org
+
+pidfile         <%= File.expand_path('openldap-data/run/slapd.pid', @conf_root) %>
+argsfile        <%= File.expand_path('openldap-data/run/slapd.args', @conf_root) %>
+
+# Load dynamic backend modules:
+modulepath	/usr/lib/openldap
+
+access to *
+	by self write
+	by * read
+	by anonymous auth
+
+#######################################################################
+# ldbm and/or bdb database definitions
+#######################################################################
+
+database	ldif
+
+suffix          "dc=example,dc=com"
+directory       openldap-data
+rootdn          "cn=admin,dc=example,dc=com"
+## rootpw = secret
+rootpw          {SSHA}fFjKcZb4cfOAcwSjJer8nCGOEVRUnwCC
