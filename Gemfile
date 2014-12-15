@@ -2,8 +2,7 @@ source 'https://rubygems.org'
 
 # TODO: Upgrade to rails 4.2.0 when it is released and get rid
 # of these beta/git gem definitions:
-gem 'rails', '~> 4.2.0.beta4'
-gem 'sass-rails', '~> 5.0.0.beta'
+gem 'rails', '~> 4.2.0.rc3'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
@@ -25,6 +24,7 @@ gem 'octokit', '> 3.3.1'
 gem 'pg'
 gem 'puma'
 gem 'sanitize'
+gem 'sass-rails', '~> 4.0'
 gem 'state_machine'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'

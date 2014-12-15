@@ -75,7 +75,7 @@ describe GithubSynchronizer do
     end
 
     it 'continues if errors occur in threads' do
-      allow_any_instance_of(GithubUser).to receive(:save!).and_raise(ActiveRecord::RecordNotSaved)
+      allow_any_instance_of(GithubUser).to receive(:save!).and_raise(ActiveRecord::RecordNotSaved.new('record not saved'))
       expect(synchronizer.sync_users).to eq(false)
       expect(synchronizer.errors).to be_a(Array)
       expect(synchronizer.errors.first).to be_a(ActiveRecord::RecordNotSaved)
@@ -120,7 +120,7 @@ describe GithubSynchronizer do
     end
 
     it 'continues if errors occur in threads' do
-      allow_any_instance_of(GithubTeam).to receive(:sync).and_raise(ActiveRecord::RecordNotSaved)
+      allow_any_instance_of(GithubTeam).to receive(:sync).and_raise(ActiveRecord::RecordNotSaved.new('record not saved'))
       expect(synchronizer.sync_teams).to eq(false)
       expect(synchronizer.errors).to be_a(Array)
       expect(synchronizer.errors.first).to be_a(ActiveRecord::RecordNotSaved)
