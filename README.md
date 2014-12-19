@@ -6,7 +6,7 @@ from terminated employees, and enforces a set of GitHub membership rules.
 
 ## Table of contents
 
-- [Quick Start](#quick_start)
+- [Quick Start](#quick-start)
 - [Installation](#installation)
 - [Running](#running)
 - [Configuration](#configuration)
