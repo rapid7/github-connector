@@ -4,10 +4,11 @@ require 'erb'
 require 'fileutils'
 require 'open3'
 
-FileUtils.chdir(File.dirname(__FILE__))
+FileUtils.chdir(__dir__)
 
 ## For OSX:
 ENV['PATH'] = "#{ENV['PATH']}:/usr/libexec"
+FileUtils.mkdir_p(File.join(__dir__, 'openldap-data', 'run'))
 
 template = File.read('slapd-test.conf.erb')
 normal_out = 'slapd-test.conf'
@@ -60,4 +61,3 @@ begin
 ensure
   kill_slapd
 end
-
