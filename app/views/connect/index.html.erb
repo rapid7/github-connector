@@ -81,7 +81,9 @@
 
     <% if @connect_status.step_error?(:add) %>
       <div class="alert alert-danger">
-        <% if @connect_status.github_user %>
+        <% if @connect_status.error_message %>
+          <p><%= @connect_status.error_message %></p>
+        <% elsif @connect_status.github_user %>
           <p>Sorry, your GitHub account cannot be added due to the following <%= "error".pluralize(@connect_status.github_user.failing_rules.count) %>:</p>
           <ul>
             <% @connect_status.github_user.failing_rules.each do |rule| %>
@@ -89,8 +91,6 @@
             <% end %>
           </ul>
           <p>Please correct these errors and <%= link_to "try again", {action: 'start'} %>.</p>
-        <% elsif @connect_status.error_message %>
-          <p><%= @connect_status.error_message %></p>
         <% else %>
           <p>An unknown error occurred.  Please <%= link_to "try again", {action: 'start'} %> again.</p>
         <% end %>
