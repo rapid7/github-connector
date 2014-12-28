@@ -4,6 +4,8 @@ GitHub Connector is a simple application for connecting GitHub.com organizations
 internal Active Directory accounts.  It grants access to new hires, removes access
 from terminated employees, and enforces a set of GitHub membership rules.
 
+[![Build Status](https://travis-ci.org/rapid7/github-connector.svg?branch=master)](https://travis-ci.org/rapid7/github-connector)
+
 ## Table of contents
 
 - [Quick Start](#quick-start)
