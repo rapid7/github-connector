@@ -1,8 +1,6 @@
 source 'https://rubygems.org'
 
-# TODO: Upgrade to rails 4.2.0 when it is released and get rid
-# of these beta/git gem definitions:
-gem 'rails', '~> 4.2.0.rc3'
+gem 'rails', '~> 4.2.0'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
