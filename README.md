@@ -1,10 +1,22 @@
 # GitHub Active Directory Connector
 
+[![Build Status](https://travis-ci.org/rapid7/github-connector.svg?branch=master)](https://travis-ci.org/rapid7/github-connector)
+
 GitHub Connector is a simple application for connecting GitHub.com organizations to
 internal Active Directory accounts.  It grants access to new hires, removes access
 from terminated employees, and enforces a set of GitHub membership rules.
 
-[![Build Status](https://travis-ci.org/rapid7/github-connector.svg?branch=master)](https://travis-ci.org/rapid7/github-connector)
+GitHub Connector is a simple application for managing [GitHub.com organizations](https://help.github.com/categories/organizations/) using your internal Active Directory server. The Connector, an app which runs internally, allows you to:
+
+* Automatically remove terminated employees from GitHub organization
+* Audit each GiHub account for compliance with policies such as:
+    * Ensure that only corporate email addresses are used for [GitHub accounts](https://developer.github.com/v3/users/emails/)
+    * Ensure that [two-factor authentication](https://help.github.com/articles/about-two-factor-authentication/) is enabled for each account
+* Enable one-step GitHub organization invite & acceptance for approved employees
+
+Future feature ideas:
+* Use AD group membership to control GitHub Organization and [GitHub Team](https://help.github.com/articles/adding-or-inviting-members-to-a-team-in-an-organization/) membership assignment
+* Detect [duplicate/weak SSH keys](https://factorable.net/index.html) across all accounts
 
 ## Table of contents
 
