@@ -149,6 +149,12 @@ class User < ActiveRecord::Base
     sync_from_ldap || raise(ActiveRecord::RecordNotSaved)
   end
 
+  # @note The term power user has certain connotations but currently
+  #   just calls {#admin?}.
+  def power_user?
+    admin?
+  end
+
   private
 
   # Finds the User using the normalized ldap username.

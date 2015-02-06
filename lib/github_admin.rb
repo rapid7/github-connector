@@ -16,7 +16,6 @@ class GithubAdmin
     synchronize { return @org_users if @org_users }
 
     users = {}
-    orgs = settings.github_orgs || []
     orgs.each do |org|
       octokit.organization_members(org).each do |user|
         if users.has_key?(user.login)
@@ -35,6 +34,23 @@ class GithubAdmin
     end
 
     synchronize { @org_users = users }
+  end
+
+  # @param [Hash] options the options to pass to octokit
+  # @option options [String] :organization the GitHub organization to
+  #   create a repository for
+  # @raise [KeyError] if the :organization option was not specified
+  # @raise [ArgumentError] if the :organization option was not a
+  #   organization configured with the GitHub connector
+  # @see https://developer.github.com/v3/repos/#create
+  def create_repository(name, options = {})
+    organization = options.fetch(:organization)
+
+    unless orgs.include?(organization)
+      raise ArgumentError, "The #{organization.inspect} is not one of #{orgs.join}"
+    end
+
+    octokit.create_repository(name, options)
   end
 
   # The GitHub API client
@@ -95,7 +111,6 @@ class GithubAdmin
     synchronize { return @teams if @teams }
 
     teams = {}
-    orgs = settings.github_orgs || []
     orgs.each do |org|
       octokit.organization_teams(org).each do |team|
         team = team.to_h
@@ -157,5 +172,9 @@ class GithubAdmin
   # @see `Mutex#synchronize`
   def synchronize(&block)
     @semaphore.synchronize(&block)
+  end
+
+  def orgs
+    settings.github_orgs or []
   end
 end
