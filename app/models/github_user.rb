@@ -125,7 +125,8 @@ class GithubUser < ActiveRecord::Base
     # Remove from the temporary MFA check team
     orgs.each do |org|
       team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
-      raise "Cannot find github_check_mfa_team for #{org}" unless team
+      raise "Adding #{login} to organization #{org}." \
+              "\nCannot find the team '#{check_mfa_team}' for #{org}" unless team
       github_admin.octokit.remove_team_member(team.id, login)
     end
 
