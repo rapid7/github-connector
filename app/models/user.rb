@@ -87,6 +87,10 @@ class User < ActiveRecord::Base
     super
   end
 
+  def power_user?
+    admin or power_user
+  end
+
   # Synchronizes {User} attributes from Active Directory and GitHub.
   #
   # @return [Boolean] true if saved successfully
@@ -147,12 +151,6 @@ class User < ActiveRecord::Base
   # @return [void]
   def sync_from_ldap!
     sync_from_ldap || raise(ActiveRecord::RecordNotSaved)
-  end
-
-  # @note The term power user has certain connotations but currently
-  #   just calls {#admin?}.
-  def power_user?
-    admin?
   end
 
   private

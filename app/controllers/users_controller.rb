@@ -31,6 +31,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:admin)
+    params.require(:user).permit(:admin, :power_user)
   end
 end
