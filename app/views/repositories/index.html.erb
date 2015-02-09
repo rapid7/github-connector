@@ -21,6 +21,16 @@
     <%= f.label :description %>
     <%= f.text_field :description %>
   </div>
+
+  <div class="form-group">
+    <h3>Webhooks</h3>
+    <% @webhooks.each_key do |name| %>
+      <br/>
+      <%= f.label name %>
+      <%= f.check_box "events[#{name}]", {}, true, false %>
+    <% end %>
+  </div>
+
   <div class="form-group">
     <%= f.label :submit %>
     <%= f.submit %>

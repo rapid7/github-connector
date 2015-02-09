@@ -53,6 +53,10 @@ class GithubAdmin
     octokit.create_repository(name, options)
   end
 
+  def create_hook(*args)
+    octokit.create_hook(*args)
+  end
+
   # The GitHub API client
   #
   # @return [Octokit::Client]
