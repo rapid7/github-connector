@@ -36,6 +36,8 @@ Future feature ideas:
 - Run bundler: `bundle install`
 - Copy `config/secrets.yml.example` to `config/secrets.yml`
 - Copy `config/database.yml.example` to `config/database.yml` and update
+- Copy `config/webhooks.yml.example` to `config/webhooks.yml` and update
+  - **NOTE**: Use an empty hash `{}` if no webhooks should be defined
 - Create database: `rake db:create db:migrate`
 - Start application: `foreman start`
 - Navigate to [http://localhost:5000](http://localhost:5000)

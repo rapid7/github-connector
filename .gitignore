@@ -2,6 +2,7 @@
 /cookbook/.kitchen
 /config/database.yml
 /config/secrets.yml
+/config/webhooks.yml
 /coverage
 /doc
 /ldap/slapd-test.conf

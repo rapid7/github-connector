@@ -14,6 +14,10 @@
     <th class="col-sm-2">Admin</th>
     <td><%= @user.admin? ? 'Yes' : 'No' %></td>
   </tr>
+  <tr>
+    <th class="col-sm-2">Power user</th>
+    <td><%= @user.power_user? ? 'Yes' : 'No' %></td>
+  </tr>
 </table>
 
 <% if current_user.admin? %>

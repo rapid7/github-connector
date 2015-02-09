@@ -1,0 +1,9 @@
+# vi: set ft=yaml :
+jenkins:
+  active: true
+  config:
+    content_type: application/x-www-form-urlencoded
+    url: https://jenkinsci.example.org/notifyCommit
+  events:
+    - push
+  secret:

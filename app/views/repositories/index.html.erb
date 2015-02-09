@@ -1,0 +1,38 @@
+<% title "GitHub Users" %>
+<% nav_section :repositories %>
+<% jumbotron do %>
+  <h1>GitHub Users</h1>
+<% end %>
+
+<%= form_for :repository do |f| %>
+  <div class="form-group">
+    <%= f.label :organization %>
+    <%= f.select :organization, @organizations %>
+  </div>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="form-group">
+    <%= f.label :private %>
+    <%= f.check_box :private, { checked: true }, true, false %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_field :description %>
+  </div>
+
+  <div class="form-group">
+    <h3>Webhooks</h3>
+    <% @webhooks.each_key do |name| %>
+      <br/>
+      <%= f.label name %>
+      <%= f.check_box "events[#{name}]", {}, true, false %>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :submit %>
+    <%= f.submit %>
+  </div>
+<% end %>

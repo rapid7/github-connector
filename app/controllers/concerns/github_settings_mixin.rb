@@ -4,7 +4,7 @@ module GithubSettingsMixin
   def github_admin
     redirect_to oauth_client.auth_code.authorize_url(
       state: oauth_authenticity_token,
-      scope: "#{oauth_scope},admin:org",
+      scope: "#{oauth_scope},admin:org,repo",
       redirect_uri: url_for(action: 'github_auth_code')
     )
   end

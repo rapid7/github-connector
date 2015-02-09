@@ -87,6 +87,10 @@ class User < ActiveRecord::Base
     super
   end
 
+  def power_user?
+    admin or power_user
+  end
+
   # Synchronizes {User} attributes from Active Directory and GitHub.
   #
   # @return [Boolean] true if saved successfully

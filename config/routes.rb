@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :show, :edit, :update]
   resources :github_users, only: [:index, :show]
+  resources :repositories, only: [:index, :create]
 
   root 'dashboard#index'
 end

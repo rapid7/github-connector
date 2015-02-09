@@ -90,9 +90,9 @@ RSpec.describe SettingsController, :type => :controller do
       expect(response['Location']).to include('client_id=fooclient')
     end
 
-    it 'requests org:admin scope' do
+    it 'requests admin:org scope' do
       subject
-      expect(redirect_params).to include('scope' => 'user:email,read:public_key,write:org,admin:org')
+      expect(redirect_params).to include('scope' => a_string_matching('admin:org'))
     end
 
     it 'sets the callback url to the github_auth_code action' do
