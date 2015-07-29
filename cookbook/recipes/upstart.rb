@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
+directory "#{node['github_connector']['install_dir']}/tmp/sockets" do
+  owner node['github_connector']['user']
+  group node['github_connector']['group']
+  mode 0755
+end
+
 template "/etc/init/github-connector-web.conf" do
   source 'upstart-github-connector-web.conf.erb'
   mode 0644
