@@ -4,6 +4,8 @@ maintainer_email "engineeringservices@rapid7.com"
 license          "Apache v2.0"
 description      "Installs and configures the GitHub Active Directory Connector"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+source_url       "https://github.com/rapid7/github-connector/tree/master/cookbook"
+issues_url       "https://github.com/rapid7/github-connector/issues"
 version          "0.1.1"
 
 supports 'ubuntu'
