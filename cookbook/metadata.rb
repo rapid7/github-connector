@@ -1,7 +1,7 @@
 name             'github_connector'
 maintainer       "Rapid7, Inc."
 maintainer_email "engineeringservices@rapid7.com"
-license          "All rights reserved"
+license          "Apache v2.0"
 description      "Installs and configures the GitHub Active Directory Connector"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.1"
