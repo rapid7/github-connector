@@ -16,7 +16,7 @@ GRAPH
   chef_gem (0.1.0)
   database (4.0.3)
     postgresql (>= 1.0.0)
-  github_connector (0.1.1)
+  github_connector (0.1.2)
     apt (>= 2.3.10)
     database (>= 2.0.0)
     logrotate (>= 1.7.0)

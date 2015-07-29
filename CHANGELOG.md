@@ -1,6 +1,10 @@
 GitHub Connector CHANGELOG
 ==========================
 
+v0.1.2
+------
+- Update chef cookbook metadata
+
 v0.1.1
 ------
 - Update to Rails 4.2.1
