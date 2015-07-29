@@ -55,6 +55,24 @@ git 'github-connector' do
 end
 
 
+# Create an alias that remains consistent across version/gemset changes
+execute 'github-connector-alias' do
+  rvm_cmd = "/home/#{node['github_connector']['user']}/.rvm/bin/rvm"
+  rvm_alias = node['github_connector']['rvm_alias']
+  ruby_string = "#{node['github_connector']['ruby_version']}@#{node['github_connector']['ruby_gemset']}"
+
+  user node['github_connector']['user']
+  group node['github_connector']['group']
+  command "#{rvm_cmd} alias create #{rvm_alias} #{ruby_string}"
+  not_if do
+    cmd = Mixlib::ShellOut.new("#{rvm_cmd} alias show #{rvm_alias}")
+    cmd.run_command
+    !cmd.error? && (cmd.stdout.strip == ruby_string)
+  end
+  notifies :reload, 'service[github-connector-web]', :delayed
+  notifies :restart, 'service[github-connector-worker]', :delayed
+end
+
 #
 # Configuration files
 #
