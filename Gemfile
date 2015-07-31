@@ -13,7 +13,7 @@ gem 'devise', '>= 3.4.0'
 # see: https://github.com/cschiewek/devise_ldap_authenticatable/pull/172
 #      https://github.com/cschiewek/devise_ldap_authenticatable/pull/171
 #      https://github.com/cschiewek/devise_ldap_authenticatable/pull/170
-gem 'devise_ldap_authenticatable', git: 'git://github.com/blt04/devise_ldap_authenticatable.git', branch: 'patches'
+gem 'devise_ldap_authenticatable', git: 'https://github.com/blt04/devise_ldap_authenticatable.git', branch: 'patches'
 gem 'friendly_id'
 gem 'font-awesome-rails'
 gem 'jquery-rails'
