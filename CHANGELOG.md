@@ -1,6 +1,10 @@
 GitHub Connector CHANGELOG
 ==========================
 
+v0.1.3
+------
+- Update to Ruby 2.3.0
+
 v0.1.2
 ------
 - Update chef cookbook metadata

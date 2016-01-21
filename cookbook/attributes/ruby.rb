@@ -1,4 +1,4 @@
-default['github_connector']['ruby_version'] = 'ruby-2.2.1'
+default['github_connector']['ruby_version'] = 'ruby-2.3.0'
 default['github_connector']['ruby_gemset'] = 'github-connector'
 default['github_connector']['rvm_alias'] = 'github-connector'
 
