@@ -9,11 +9,7 @@ gem 'compass-rails'
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'devise', '>= 3.4.0'
-# We can switch to upstream when version > 0.8.1 is released
-# see: https://github.com/cschiewek/devise_ldap_authenticatable/pull/172
-#      https://github.com/cschiewek/devise_ldap_authenticatable/pull/171
-#      https://github.com/cschiewek/devise_ldap_authenticatable/pull/170
-gem 'devise_ldap_authenticatable', git: 'https://github.com/blt04/devise_ldap_authenticatable.git', branch: 'patches'
+gem 'devise_ldap_authenticatable', '> 0.8.1'
 gem 'friendly_id'
 gem 'font-awesome-rails'
 gem 'jquery-rails'
