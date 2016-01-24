@@ -19,6 +19,8 @@
 
 # gawk is needed to install ruby 2.1.x but is not installed by RVM
 package 'gawk'
+# libgmp-dev is needed to install some native dependencies with Ruby 2.3.0
+package 'libgmp-dev'
 
 node.default['rvm']['user_installs'] = [{
   user: node['github_connector']['user'],
