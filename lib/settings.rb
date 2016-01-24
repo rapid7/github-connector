@@ -133,7 +133,7 @@ module GithubConnector
     setting :rule_max_sync_age, type: :integer
 
     def github_admin_oauth_scope
-      "#{user_oauth_scope},admin:org"
+      "#{github_user_oauth_scope},admin:org"
     end
 
     def github_user_oauth_scope
