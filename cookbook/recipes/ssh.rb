@@ -17,10 +17,29 @@
 # limitations under the License.
 #
 
+# Create custom wrapper scripts that allow deploying private repos
+repos = {}
 if node['github_connector']['ssh_databag'] && node['github_connector']['ssh_databag_item']
+  repos['github_connector'] = {
+    'ssh_databag' => node['github_connector']['ssh_databag'],
+    'ssh_databag_item' => node['github_connector']['ssh_databag_item'],
+  }
+end
+
+node['github_connector']['engines'].each do |engine, attrs|
+  if attrs['ssh_databag'] && attrs['ssh_databag_item']
+    repos[engine] = {
+      'ssh_databag' => attrs['ssh_databag'],
+      'ssh_databag_item' => attrs['ssh_databag_item'],
+    }
+  end
+end
+
+
+repos.each do |repo_name, attrs|
   ssh_data_bag = GithubConnector::Helpers.load_data_bag(
-    node['github_connector']['ssh_databag'],
-    node['github_connector']['ssh_databag_item']
+    attrs['ssh_databag'],
+    attrs['ssh_databag_item']
   )
 
   if ssh_data_bag && ssh_data_bag['private_key']
@@ -35,22 +54,22 @@ if node['github_connector']['ssh_databag'] && node['github_connector']['ssh_data
       group node['github_connector']['group']
     end
 
-    file ::File.join(ssh_dir, 'github_connector_id_rsa') do
+    file ::File.join(ssh_dir, "#{repo_name}_id_rsa") do
       content private_key.to_pem
       owner node['github_connector']['user']
       group node['github_connector']['group']
       mode 0600
     end
 
-    file ::File.join(ssh_dir, 'github_connector_id_rsa.pub') do
+    file ::File.join(ssh_dir, "#{repo_name}_id_rsa.pub") do
       content "#{public_key.ssh_type} #{[public_key.to_blob].pack('m0')}\n"
       owner node['github_connector']['user']
       group node['github_connector']['group']
       mode 0644
     end
 
-    file ::File.join(ssh_dir, 'github_connector_ssh_wrapper.sh') do
-      content "#!/bin/sh -e\nexec ssh -i #{::File.join(ssh_dir, 'github_connector_id_rsa')} $@\n"
+    file ::File.join(ssh_dir, "#{repo_name}_ssh_wrapper.sh") do
+      content "#!/bin/sh -e\nexec ssh -i #{::File.join(ssh_dir, "#{repo_name}_id_rsa")} $@\n"
       owner node['github_connector']['user']
       group node['github_connector']['group']
       mode 0755

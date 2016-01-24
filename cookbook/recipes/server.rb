@@ -54,6 +54,33 @@ git 'github-connector' do
   notifies :restart, 'service[github-connector-worker]', :delayed
 end
 
+#
+# Custom engines
+#
+
+directory "#{install_dir}/vendor/engines" do
+  recursive true
+  owner node['github_connector']['user']
+  group node['github_connector']['group']
+end
+
+node['github_connector']['engines'].each do |engine, attrs|
+  git engine do
+    destination "#{install_dir}/vendor/engines/#{engine}"
+    user node['github_connector']['user']
+    group node['github_connector']['group']
+    repository attrs['url']
+    revision attrs['revision']
+    ssh_wrapper "/home/#{node['github_connector']['user']}/.ssh/#{engine}_ssh_wrapper.sh"
+    action :sync
+    notifies :run, 'rvm_shell[github-connector-gems]', :immediately
+    notifies :run, 'rvm_shell[github-connector-database-migration]', :immediately
+    notifies :run, 'rvm_shell[github-connector-assets]', :immediately
+    notifies :reload, 'service[github-connector-web]', :delayed
+    notifies :restart, 'service[github-connector-worker]', :delayed
+  end
+end
+
 
 # Create an alias that remains consistent across version/gemset changes
 execute 'github-connector-alias' do
