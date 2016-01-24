@@ -11,4 +11,5 @@
 /public/favicon.ico
 /tmp
 /vendor/bundle
+/vendor/engines
 /.yardoc

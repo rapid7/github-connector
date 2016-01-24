@@ -23,6 +23,15 @@ gem 'state_machine'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 
+# Add local customizations via rails engines
+require 'pathname'
+engines_path = Pathname.new(__FILE__).parent.join('vendor', 'engines')
+if engines_path.exist?
+  engines_path.each_child(false) do |engine_name|
+    gem engine_name.to_s, path: File.join('vendor', 'engines', engine_name)
+  end
+end
+
 group :development do
   gem 'foreman'
   gem 'spring'

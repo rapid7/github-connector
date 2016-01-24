@@ -15,3 +15,14 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require_tree .
+<%
+# Require JS assets from custom engines
+engines_path = Rails.root.join('vendor', 'engines')
+if engines_path.exist?
+  Rails.root.join('vendor', 'engines').each_child(false) do |engine_name|
+    if Rails.application.assets.find_asset("#{engine_name}.js")
+      require_asset(engine_name.to_s)
+    end
+  end
+end
+%>
