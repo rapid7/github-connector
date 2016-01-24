@@ -68,9 +68,10 @@ RSpec.describe ConnectController, :type => :controller do
       expect(response['Location']).to include('client_id=fooclient')
     end
 
-    it 'requests user:email scope' do
+    it 'requests user scopes from Settings.github_user_admin_oauth_scope' do
+      expect(settings).to receive(:github_user_oauth_scope).and_return('foo:one,bar:two')
       subject
-      expect(redirect_params).to include('scope' => 'user:email,read:public_key,write:org')
+      expect(redirect_params).to include('scope' => 'foo:one,bar:two')
     end
 
     it 'sets the callback url to the auth_code action' do

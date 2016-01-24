@@ -29,7 +29,8 @@ module GithubOauthConcern
   end
 
   def oauth_scope
-    'user:email,read:public_key,write:org'
+    settings = Rails.application.settings
+    settings.github_user_oauth_scope
   end
 
   def oauth_validate_authenticity_token
