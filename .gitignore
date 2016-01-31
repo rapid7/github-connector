@@ -6,9 +6,10 @@
 /doc
 /ldap/slapd-test.conf
 /ldap/openldap-data
-/log/*.log
+/log/*.log*
 /public/assets
 /public/favicon.ico
 /tmp
 /vendor/bundle
+/vendor/engines
 /.yardoc

@@ -132,6 +132,14 @@ module GithubConnector
     #     GitHub synchronization
     setting :rule_max_sync_age, type: :integer
 
+    def github_admin_oauth_scope
+      "#{github_user_oauth_scope},admin:org"
+    end
+
+    def github_user_oauth_scope
+      'user:email,read:public_key,write:org'
+    end
+
     # Apply Action Mailer related settings to the ActionMailer.
     #
     # @param klass [Class] the ActionMailer class to apply settings to.  Default

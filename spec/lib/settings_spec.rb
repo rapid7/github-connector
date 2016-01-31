@@ -37,6 +37,25 @@ describe GithubConnector::Settings do
     end
   end
 
+  describe '#github_admin_oauth_scope' do
+    it 'includes the user scope' do
+      expect(settings).to receive(:github_user_oauth_scope).and_return('foouser:fooscope')
+      expect(settings.github_admin_oauth_scope).to include('foouser:fooscope')
+    end
+
+    it 'includes admin:org' do
+      expect(settings.github_admin_oauth_scope).to include('admin:org')
+    end
+  end
+
+  describe '#github_user_oauth_scope' do
+    it 'includes required scopes' do
+      expect(settings.github_user_oauth_scope).to include('user:email')
+      expect(settings.github_user_oauth_scope).to include('read:public_key')
+      expect(settings.github_user_oauth_scope).to include('write:org')
+    end
+  end
+
   describe '#ldap_keys' do
     it 'returns a list of ldap keys' do
       expect(settings.ldap_keys).to eq(%i(ldap_host ldap_port ldap_ssl ldap_admin_user ldap_admin_password ldap_attribute ldap_base))

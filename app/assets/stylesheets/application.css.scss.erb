@@ -12,6 +12,17 @@
  *
  *=require_self
  *=require_tree
+<%
+# Require CSS assets from custom engines
+engines_path = Rails.root.join('vendor', 'engines')
+if engines_path.exist?
+  Rails.root.join('vendor', 'engines').each_child(false) do |engine_name|
+    if Rails.application.assets.find_asset("#{engine_name}.css")
+      require_asset(engine_name.to_s)
+    end
+  end
+end
+%>
  */
 $container-large-desktop: 970px;
 @import "compass/css3";
