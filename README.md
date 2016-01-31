@@ -27,6 +27,7 @@ Future feature ideas:
 - [Synchronization](#synchornization)
 - [Rules](#rules)
 - [Tests](#tests)
+- [Customizing](#customizing)
 - [Contributing](#contributing)
 - [Copyright and License](#license)
 
@@ -132,6 +133,18 @@ yard
 ```
 
 Open `doc/index.html` with your favorite browser.
+
+## Customizing
+
+GitHub Connector supports customization via [rails engines](http://guides.rubyonrails.org/engines.html).  If you need to make modifications specific to your organization that don't make sense in an open source repo, use a rails engine.
+
+Creating a new engine is easy:
+
+```
+rails plugin new vendor/engines/github_connector_custom_ext --full
+```
+
+All engines in the `vendor/engine` directory will be automatically loaded.  An engine's javascript and CSS will be included in `application.js` and `application.css`.
 
 ## Contributing
 
