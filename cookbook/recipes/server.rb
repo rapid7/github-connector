@@ -161,7 +161,7 @@ rvm_shell 'github-connector-assets' do
   user node['github_connector']['user']
   group node['github_connector']['group']
   cwd install_dir
-  code %{rake assets:precompile RAILS_ENV=production}
+  code %{rake assets:clean assets:precompile RAILS_ENV=production}
   action :nothing
   subscribes :run, 'git[github-connector]', :immediately
 end
