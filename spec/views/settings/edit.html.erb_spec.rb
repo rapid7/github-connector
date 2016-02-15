@@ -5,12 +5,14 @@ RSpec.describe "settings/edit.html.erb", type: :view do
   # We can't call this "settings" because ViewExampleGroup adds view helpers
   # to the spec -- the settings helper would take precedence over a let
   let(:test_settings) { GithubConnector::Settings.new.disconnect; }
+  let(:section_partials) { SettingsController.new.send(:section_partials) }
   let(:user) { build(:user) }
 
   before do
     controller.extend(SettingsMixin)
     controller.instance_variable_set('@settings', test_settings)
     assign(:settings, test_settings)
+    assign(:section_partials, section_partials)
     allow(view).to receive(:current_user).and_return(user)
   end
 

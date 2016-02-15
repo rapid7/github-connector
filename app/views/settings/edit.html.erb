@@ -12,17 +12,10 @@
 
   <%= render 'company' %>
 
-  <h2>Active Directory</h2>
-  <%= render 'active_directory' %>
-
-  <h2>GitHub</h2>
-  <%= render 'github' %>
-
-  <h2>Rules</h2>
-  <%= render 'rules' %>
-
-  <h2>Email</h2>
-  <%= render 'email' %>
+  <% @section_partials.each do |header, partial| %>
+    <h2><%= header %></h2>
+    <%= render partial %>
+  <% end %>
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
