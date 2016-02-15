@@ -34,16 +34,17 @@
     <div class="navbar-collapse collapse" id="gh-main-nav-collapse">
       <ul class="nav navbar-nav">
         <% if settings.configured? && user_signed_in? %>
-          <li<%=raw ' class="active"' if nav_section == :connect %>>
-            <%= link_to('Add Account', connect_path) %>
-          </li>
+          <% @navbar.sections.each do |section, attrs| %>
+            <li<%=raw ' class="active"' if nav_section == section %>>
+              <%= link_to(attrs[:title], attrs[:url]) %>
+            </li>
+          <% end %>
           <% if current_user.admin? %>
-            <li<%=raw ' class="active"' if nav_section == :users %>>
-              <%= link_to('Users', users_path) %>
-            </li>
-            <li<%=raw ' class="active"' if nav_section == :github_users %>>
-              <%= link_to('GitHub Users', github_users_path) %>
-            </li>
+            <% @navbar.admin_sections.each do |section, attrs| %>
+              <li<%=raw ' class="active"' if nav_section == section %>>
+                <%= link_to(attrs[:title], attrs[:url]) %>
+              </li>
+            <% end %>
           <% end %>
         <% end %>
       </ul>

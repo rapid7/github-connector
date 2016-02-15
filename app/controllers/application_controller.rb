@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
 
   before_action :check_configured
   before_action :authenticate_user!
+  before_action :load_navbar
 
   private
   def check_configured
@@ -20,5 +21,9 @@ class ApplicationController < ActionController::Base
     return true if current_user.admin?
     render :status => :forbidden, :text => 'Forbidden'
     false
+  end
+
+  def load_navbar
+    @navbar = GithubConnector::Navbar.new
   end
 end
