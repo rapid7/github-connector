@@ -119,7 +119,7 @@ class GithubAdmin
       team_data = teams.values.find do |t|
         team_param == t[:slug] || team_param == "#{t[:organization]}/#{t[:slug]}"
       end
-      team_id = team_data[:id] if team_data
+      team_id = team_data ? team_data[:id] : nil
     end
     team_id
   end
