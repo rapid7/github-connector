@@ -9,6 +9,7 @@ class GithubUser < ActiveRecord::Base
 
   belongs_to :user
   has_many :emails, class_name: 'GithubEmail', dependent: :destroy
+  has_many :org_memberships, class_name: 'GithubOrganizationMembership', dependent: :destroy
   has_and_belongs_to_many :teams, class_name: 'GithubTeam', join_table: :github_user_teams
   has_and_belongs_to_many :disabled_teams, class_name: 'GithubTeam', join_table: :github_user_disabled_teams
 
@@ -205,6 +206,13 @@ class GithubUser < ActiveRecord::Base
     end.compact.uniq
   end
 
+  def organization_admin?(org)
+    membership = org_memberships.find { |m| m.organization == org }
+    return false unless membership
+    membership.admin?
+  end
+  alias :org_admin? :organization_admin?
+
   # Returns a list of passing rules for this User.
   #
   # @return [Rules::Iterator]
@@ -275,10 +283,21 @@ class GithubUser < ActiveRecord::Base
       return save
     end
 
+    orgs = Rails.application.settings.github_orgs || []
+
     # Pull data from GitHub API
     begin
       ghuser = octokit.user
       ghemails = octokit.emails.map { |h| h[:email] }
+      ghmemberships = octokit.organization_memberships.inject({}) do |memo, membership|
+        if orgs.include?(membership[:organization][:login])
+          memo[membership[:organization][:login]] = {
+            state: membership[:state],
+            role: membership[:role],
+          }
+        end
+        memo
+      end
     rescue Octokit::Error => e
       Rails.logger.error "Error syncing #{login} with GitHub: #{e}"
       self.sync_error = e.class.name.demodulize.underscore
@@ -287,8 +306,9 @@ class GithubUser < ActiveRecord::Base
 
     # Save results
     transaction do
-      # Force association reload just in case
+      # Force associations reload just in case
       emails(true)
+      org_memberships(true)
 
       # Remove old email addresses
       removed = emails.select do |email|
@@ -300,6 +320,23 @@ class GithubUser < ActiveRecord::Base
       existing_emails = emails.map(&:address)
       (ghemails - existing_emails).each do |added|
         emails.build(address: added)
+      end
+
+      # Remove old memberships
+      removed = org_memberships.select do |membership|
+        !ghmemberships.include?(membership.organization)
+      end
+      org_memberships.destroy(removed)
+
+      # Sync new memberships
+      ghmemberships.each do |org, attrs|
+        existing = org_memberships.find { |membership| membership.organization == org }
+        if existing
+          existing.state = attrs[:state]
+          existing.role = attrs[:role]
+        else
+          org_memberships.build(organization: org, state: attrs[:state], role: attrs[:role])
+        end
       end
 
       self.login = ghuser.login

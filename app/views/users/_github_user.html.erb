@@ -29,6 +29,18 @@
       <td><%= github_user.mfa ? "Yes" : "No" %></td>
     </tr>
 
+    <% unless github_user.org_memberships.empty? %>
+    <tr>
+      <th>Organizations</th>
+      <td>
+        <ul class="list-unstyled">
+          <% github_user.org_memberships.each do |membership| %>
+            <li><a href="https://github.com/<%= membership.organization %>"><%= membership.organization %></a> (<%= membership.role %>)</li>
+          <% end %>
+        </ul>
+    </tr>
+    <% end %>
+
     <tr>
       <th><%= 'Team'.pluralize(github_user.teams.size) %></th>
       <td>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141018212156) do
+ActiveRecord::Schema.define(version: 20160215025445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,17 @@ ActiveRecord::Schema.define(version: 20141018212156) do
   end
 
   add_index "github_emails", ["github_user_id"], name: "index_github_emails_on_github_user_id", using: :btree
+
+  create_table "github_organization_memberships", force: :cascade do |t|
+    t.integer  "github_user_id", null: false
+    t.string   "organization",   null: false
+    t.string   "role"
+    t.string   "state"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "github_organization_memberships", ["github_user_id"], name: "index_github_organization_memberships_on_github_user_id", using: :btree
 
   create_table "github_teams", force: :cascade do |t|
     t.string   "slug"

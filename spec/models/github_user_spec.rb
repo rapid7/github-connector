@@ -6,12 +6,16 @@ describe GithubUser do
   context 'with GitHub' do
     let(:github_admin) { double('github_admin', octokit: admin_octokit) }
     let(:admin_octokit) { double('admin-octokit') }
-    let(:octokit) { double('octokit', user: gh_user, emails: gh_emails, rate_limit: double) }
+    let(:octokit) { double('octokit', user: gh_user, emails: gh_emails, organization_memberships: gh_memberships, rate_limit: double) }
     let(:gh_login) { 'foouser-gh' }
     let(:gh_user) { double('gh_user', login: gh_login) }
     let(:gh_emails) {[
       {email: 'foouser@example.com', primary: true, verified: true},
       {email: 'foouser@example.org', primary: false, verified: true},
+    ]}
+    let(:gh_memberships) {[
+      {organization: {login: 'org1'}, state: 'active', role: 'limited_member'},
+      {organization: {login: 'otherorg'}, state: 'active', role: 'limited_member'},
     ]}
 
     before do
@@ -37,6 +41,39 @@ describe GithubUser do
       user.emails.create!(address: 'foouser2@example.org')
       user.sync!
       expect(user.emails).to_not include('foouser2@example.org')
+    end
+
+    context 'with organizations' do
+      before do
+        Rails.application.settings.github_orgs = ['org1', 'org2']
+      end
+
+      it 'adds new GitHub organization memberships' do
+        user.sync!
+        expect(user.org_memberships.count).to eq(1)
+        expect(user.org_memberships.first.state).to eq('active')
+        expect(user.org_memberships.first.role).to eq('limited_member')
+      end
+
+      it 'synchronizes existing GitHub organization memberships' do
+        create(:github_organization_membership, github_user: user, organization: 'org1', role: 'admin', state: 'active')
+        user.sync!
+        expect(user.org_memberships.count).to eq(1)
+        expect(user.org_memberships.first.role).to eq('limited_member')
+      end
+
+      it 'removes old GitHub organization memberships' do
+        user.save!
+        user.org_memberships.create(organization: 'fakeorg')
+        user.sync!
+        expect(user.org_memberships.map {|m| m.organization}).to_not include('fakeorg')
+      end
+
+      it 'returns if the user is an org admin' do
+        create(:github_organization_membership, github_user: user, organization: 'org1', role: 'admin', state: 'active')
+        expect(user.organization_admin?('org1')).to eq(true)
+        expect(user.organization_admin?('org2')).to eq(false)
+      end
     end
 
     it 'updates the synchronization date' do
