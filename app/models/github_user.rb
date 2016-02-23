@@ -334,6 +334,7 @@ class GithubUser < ActiveRecord::Base
         if existing
           existing.state = attrs[:state]
           existing.role = attrs[:role]
+          existing.save
         else
           org_memberships.build(organization: org, state: attrs[:state], role: attrs[:role])
         end

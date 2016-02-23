@@ -50,6 +50,7 @@ describe GithubUser do
 
       it 'adds new GitHub organization memberships' do
         user.sync!
+        user.reload
         expect(user.org_memberships.count).to eq(1)
         expect(user.org_memberships.first.state).to eq('active')
         expect(user.org_memberships.first.role).to eq('limited_member')
@@ -58,6 +59,7 @@ describe GithubUser do
       it 'synchronizes existing GitHub organization memberships' do
         create(:github_organization_membership, github_user: user, organization: 'org1', role: 'admin', state: 'active')
         user.sync!
+        user.reload
         expect(user.org_memberships.count).to eq(1)
         expect(user.org_memberships.first.role).to eq('limited_member')
       end
@@ -66,6 +68,7 @@ describe GithubUser do
         user.save!
         user.org_memberships.create(organization: 'fakeorg')
         user.sync!
+        user.reload
         expect(user.org_memberships.map {|m| m.organization}).to_not include('fakeorg')
       end
 
