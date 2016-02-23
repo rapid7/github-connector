@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'settings'
 
 describe GithubConnector::Settings do
 

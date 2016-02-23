@@ -28,7 +28,6 @@ module GithubConnector
     config.autoload_paths << Rails.root.join('lib')
 
     def settings
-      require 'settings'
       @settings ||= Settings.new
     end
   end

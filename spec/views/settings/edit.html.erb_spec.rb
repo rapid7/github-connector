@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'settings'
 
 RSpec.describe "settings/edit.html.erb", type: :view do
   # We can't call this "settings" because ViewExampleGroup adds view helpers
