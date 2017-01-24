@@ -24,7 +24,7 @@ Future feature ideas:
 - [Installation](#installation)
 - [Running](#running)
 - [Configuration](#configuration)
-- [Synchronization](#synchornization)
+- [Synchronization](#synchronization)
 - [Rules](#rules)
 - [Tests](#tests)
 - [Customizing](#customizing)
