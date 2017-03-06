@@ -353,7 +353,7 @@ class GithubUser < ActiveRecord::Base
   #
   # @return [void]
   def sync!
-    sync || raise(ActiveRecord::RecordNotSaved)
+    sync || raise(ActiveRecord::RecordNotSaved.new("Error saving GithubUser: #{errors.count > 0 ? errors.full_messages.join("; ") : sync_error}", self))
   end
 
   def sync_error=(val)

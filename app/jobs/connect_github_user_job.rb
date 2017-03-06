@@ -45,7 +45,7 @@ class ConnectGithubUserJob < ActiveJob::Base
     )
 
   rescue => e
-    Rails.logger.error "Error running ConnectGithubUserJob: #{e}"
+    Rails.logger.error "Error running ConnectGithubUserJob: #{e}\n\t#{e.backtrace.join("\n\t")}"
     @connect_status.update_attributes!(
       status: :error,
       error_message: e.message
