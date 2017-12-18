@@ -321,6 +321,13 @@ describe GithubUser do
     expect(user.github_admin).to be_a(GithubAdmin)
   end
 
+  it 'excludes internal data from json' do
+    json = user.as_json
+    expect(json).to_not include('encrypted_token')
+    expect(json).to_not include('id')
+    expect(json).to_not include('user_id')
+  end
+
   describe '#do_enable' do
     let(:transition) { double.as_null_object }
 

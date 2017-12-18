@@ -6,9 +6,17 @@ class UsersController < ApplicationController
   def index
     # TODO: Pagination
     @users = User.includes(:github_users).order(:name)
+    respond_to do |format|
+      format.html
+      format.json { render json: @users }
+    end
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @user }
+    end
   end
 
   def edit

@@ -170,6 +170,16 @@ class GithubUser < ActiveRecord::Base
     end
   end
 
+  def as_json(options={})
+    options[:except] ||= []
+    options[:except] += [:encrypted_token, :id, :user_id]
+    json = super(options)
+    unless options[:except].include?(:user)
+      json['user'] = user.as_json(except: [:github_users])
+    end
+    json
+  end
+
   # Should the Github user be excluded from processing by global settings?
   #
   # @return [Boolean]

@@ -50,6 +50,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  def as_json(options={})
+    options[:except] ||= []
+    options[:except] += [:id]
+    options[:methods] ||= [:ldap_account_control_flags]
+    json = super(options)
+    unless options[:except].include?(:github_users)
+      json['github_users'] = github_users.map { |ghuser| ghuser.login }
+    end
+    json
+  end
+
   # Returns a list of Github email addresses
   #
   # @return [Array<String>]
@@ -60,6 +71,7 @@ class User < ActiveRecord::Base
   end
 
   def ldap_account_control_flags
+    return [] unless ldap_account_control
     AccountControl.constants.inject([]) do |flags, const|
       if (AccountControl.const_get(const) & ldap_account_control) != 0
         flags << const.downcase
