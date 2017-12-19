@@ -177,6 +177,9 @@ class GithubUser < ActiveRecord::Base
     unless options[:except].include?(:user)
       json['user'] = user.as_json(except: [:github_users])
     end
+    unless options[:except].include?(:teams)
+      json['teams'] = teams.map { |ghteam| ghteam.full_slug }
+    end
     json
   end
 
