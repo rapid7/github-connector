@@ -9,6 +9,11 @@ describe User do
   let(:email) { 'foouser@example.com' }
   let(:user_account_control) { 512 }
 
+  it 'excludes internal data from json' do
+    json = user.as_json
+    expect(json).to_not include('id')
+  end
+
   context 'with ldap' do
     let(:ldap) { double }
     let(:ldap_connection) { double(ldap: ldap) }
@@ -122,6 +127,12 @@ describe User do
       expect(emails).to be_an(Array)
       expect(emails).to_not be_empty
       expect(emails).to include(/githubemail\d+@example.com/)
+    end
+
+    it 'includes Github usernames in json' do
+      json = user.as_json
+      expect(json).to include('github_users')
+      expect(json['github_users']).to include(github_users.first.login)
     end
   end
 
