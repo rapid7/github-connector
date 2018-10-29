@@ -1,6 +1,10 @@
 GitHub Connector CHANGELOG
 ==========================
 
+v0.1.5
+------
+- Upgrade Octokit to latest version [#13]
+
 v0.1.4
 ------
 - Add simple JSON API [#12]
