@@ -74,6 +74,8 @@ class GithubUser < ActiveRecord::Base
     return true if orgs.empty?
     check_mfa_team = Rails.application.settings.github_check_mfa_team
     default_teams = Rails.application.settings.github_default_teams
+    practice_team = User.joins(:github_users).where(github_users: { login: login }).pluck(:department)
+    practice_team.map!(&:downcase)
     raise "Must set github_check_mfa_team setting!" unless check_mfa_team
     raise "Must set github_default_teams setting!" unless default_teams
 
@@ -83,7 +85,8 @@ class GithubUser < ActiveRecord::Base
     orgs.each do |org|
       unless github_admin.octokit.organization_member?(org, login)
         Rails.logger.info "Adding #{login} to organization #{org}."
-        team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
+
+	      team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
         raise "Adding #{login} to organization #{org}." \
               "\nCannot find the team '#{check_mfa_team}' for #{org}" unless team
 
@@ -118,9 +121,10 @@ class GithubUser < ActiveRecord::Base
     # Check for failing rules
     valid_user = failing_rules.empty?
 
-    # Add to default teams
+    # Add to default and practice teams
     if valid_user
       add_to_teams(default_teams)
+      add_to_teams(practice_team)
     end
 
     # Remove from the temporary MFA check team

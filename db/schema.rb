@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20160215025445) do
     t.string   "email"
     t.boolean  "admin"
     t.string   "remember_token"
+    t.string   "department"
   end
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
