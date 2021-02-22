@@ -74,8 +74,7 @@ class GithubUser < ActiveRecord::Base
     return true if orgs.empty?
     check_mfa_team = Rails.application.settings.github_check_mfa_team
     default_teams = Rails.application.settings.github_default_teams
-    practice_team = User.joins(:github_users).where(github_users: { login: login }).pluck(:department)
-    practice_team.map!(&:downcase)
+    practice = User.joins(:github_users).where(github_users: { login: login }).pluck(:department)
     raise "Must set github_check_mfa_team setting!" unless check_mfa_team
     raise "Must set github_default_teams setting!" unless default_teams
 
@@ -86,7 +85,7 @@ class GithubUser < ActiveRecord::Base
       unless github_admin.octokit.organization_member?(org, login)
         Rails.logger.info "Adding #{login} to organization #{org}."
 
-	      team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
+	team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
         raise "Adding #{login} to organization #{org}." \
               "\nCannot find the team '#{check_mfa_team}' for #{org}" unless team
 
@@ -124,7 +123,11 @@ class GithubUser < ActiveRecord::Base
     # Add to default and practice teams
     if valid_user
       add_to_teams(default_teams)
-      add_to_teams(practice_team)
+    end
+
+    if practice.any? && valid_user
+       practice_teams = get_practice_teams(practice)
+       add_to_teams(practice_teams)
     end
 
     # Remove from the temporary MFA check team
@@ -136,6 +139,18 @@ class GithubUser < ActiveRecord::Base
     end
 
     valid_user
+  end
+
+  # Gets practice level teams based on department
+  #
+  # @return [Array<GithubTeam>]
+  def get_practice_teams(practice)
+    practice_teams = practice.map!(&:downcase)
+    engineering_teams = ['vrm', 'dnr', 'platform', 'soar', 'cloud']
+    if practice_teams.any?{|x| engineering_teams.include?(x)}
+      practice_teams << 'engineering'
+    end
+    practice_teams
   end
 
   # Adds the user to the given Github teams.
