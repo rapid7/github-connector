@@ -74,7 +74,7 @@ class GithubUser < ActiveRecord::Base
     return true if orgs.empty?
     check_mfa_team = Rails.application.settings.github_check_mfa_team
     default_teams = Rails.application.settings.github_default_teams
-    practice = User.joins(:github_users).where(github_users: { login: login }).pluck(:department)
+    department = User.joins(:github_users).where(github_users: { login: login }).pluck(:department)
     raise "Must set github_check_mfa_team setting!" unless check_mfa_team
     raise "Must set github_default_teams setting!" unless default_teams
 
@@ -120,14 +120,14 @@ class GithubUser < ActiveRecord::Base
     # Check for failing rules
     valid_user = failing_rules.empty?
 
-    # Add to default and practice teams
+    # Add to default and department teams
     if valid_user
       add_to_teams(default_teams)
     end
 
-    if practice.any? && valid_user
-       practice_teams = get_practice_teams(practice)
-       add_to_teams(practice_teams)
+    if department.any? && valid_user
+       department_teams = get_department_teams(department)
+       add_to_teams(department_teams)
     end
 
     # Remove from the temporary MFA check team
@@ -141,16 +141,27 @@ class GithubUser < ActiveRecord::Base
     valid_user
   end
 
-  # Gets practice level teams based on department
+  # Gets teams based on department from department yaml in settings
   #
   # @return [Array<GithubTeam>]
-  def get_practice_teams(practice)
-    practice_teams = practice.map!(&:downcase)
-    engineering_teams = ['vrm', 'dnr', 'platform', 'soar', 'cloud']
-    if practice_teams.any?{|x| engineering_teams.include?(x)}
-      practice_teams << 'engineering'
+  def get_department_teams(department)
+    user_departments = department.map!(&:downcase)
+    user_department_teams = []
+    orgs = Rails.application.settings.github_orgs || []
+    department_teams = Rails.application.settings.github_department_teams
+
+    orgs.each do |org|
+      if department_teams.key?(org)
+        user_departments.each do |department|
+          if department_teams[org].key?(department)
+            user_department_teams.concat(department_teams[org][department])
+          end
+        end
+      end
     end
-    practice_teams
+
+    user_department_teams
+
   end
 
   # Adds the user to the given Github teams.

@@ -50,11 +50,22 @@
   </div>
 
   <div class="setting form-group">
-    <%= label_tag(:settings_github_default_teams, 'Default teams', class: 'control-label col-sm-2') %>
+    <%= label_tag(:settings_github_default_teams, 'Org default teams', class: 'control-label col-sm-2') %>
     <div class="col-sm-10">
       <%= text_area(:settings,
         :github_default_teams,
         value: @settings.github_default_teams ? @settings.github_default_teams.join("\r\n") : nil,
+        class: 'form-control') %>
+      <span class="help-block">GitHub teams, one slug per line, all users should belong to.</span>
+    </div>
+  </div>
+
+  <div class="setting form-group">
+    <%= label_tag(:settings_github_department_teams, 'Department default teams', class: 'control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_area(:settings,
+        :github_department_teams,
+        value: @settings.github_department_teams ? @settings.github_department_teams.to_yaml : nil,
         class: 'form-control') %>
       <span class="help-block">GitHub teams, one slug per line, all users should belong to.</span>
     </div>

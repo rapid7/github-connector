@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Settings
   ##
   # Defines a setting used in {Settings::Base}.
@@ -45,6 +47,18 @@ module Settings
       !!@encrypt
     end
 
+    # Checks if string is valid yaml before trying to load a yaml string
+    #
+    # @param [String] yaml
+    # @return [Boolean] parsed yaml if string is valid yaml
+    def valid_yaml_string?(yaml)
+      !!YAML.load(yaml)
+      return true
+    rescue Exception => e
+      STDERR.puts e.message
+      return false
+    end
+
     # Casts the given value according to the `type` setting option.
     #
     # @param [Object] val
@@ -59,6 +73,7 @@ module Settings
         when :datetime then DateTime.parse(val.to_s)
         when :array then val.is_a?(Array) ? val : JSON.parse(val)
         when :hash then val.is_a?(Hash) ? val : JSON.parse(val)
+        when :yaml then val.is_a?(Hash) ? val : ( valid_yaml_string?(val) ? YAML.load(val) : eval(val) )
         else val
       end
     end
