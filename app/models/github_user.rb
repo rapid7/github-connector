@@ -150,14 +150,18 @@ class GithubUser < ActiveRecord::Base
     orgs = Rails.application.settings.github_orgs || []
     department_teams = Rails.application.settings.github_department_teams
 
-    orgs.each do |org|
-      if department_teams.key?(org)
-        user_departments.each do |department|
-          if department_teams[org].key?(department)
-            user_department_teams.concat(department_teams[org][department])
+    if department_teams
+
+      orgs.each do |org|
+        if department_teams.key?(org)
+          user_departments.each do |department|
+            if department_teams[org].key?(department)
+              user_department_teams.concat(department_teams[org][department])
+            end
           end
         end
       end
+    
     end
 
     user_department_teams
