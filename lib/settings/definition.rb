@@ -1,5 +1,3 @@
-require 'yaml'
-
 module Settings
   ##
   # Defines a setting used in {Settings::Base}.
