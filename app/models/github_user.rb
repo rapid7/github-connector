@@ -84,7 +84,6 @@ class GithubUser < ActiveRecord::Base
     orgs.each do |org|
       unless github_admin.octokit.organization_member?(org, login)
         Rails.logger.info "Adding #{login} to organization #{org}."
-
 	team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
         raise "Adding #{login} to organization #{org}." \
               "\nCannot find the team '#{check_mfa_team}' for #{org}" unless team
