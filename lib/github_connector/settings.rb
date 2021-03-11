@@ -61,10 +61,6 @@ module GithubConnector
     #   @return [Array] list of GitHub teams all users should belong to
     setting :github_default_teams, type: :array
 
-    # @!attribute github_department_teams
-    #   @return {Hash[Array]} hash of departments mapped to array of default teams
-    setting :github_department_teams, type: :yaml
-
     # @!attribute github_check_mfa_team
     #   @return [String] the GitHub team used to check 2FA status for new users
     setting :github_check_mfa_team
