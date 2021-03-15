@@ -74,6 +74,7 @@ class GithubUser < ActiveRecord::Base
     return true if orgs.empty?
     check_mfa_team = Rails.application.settings.github_check_mfa_team
     default_teams = Rails.application.settings.github_default_teams
+    department = User.joins(:github_users).where(github_users: { login: login }).pluck(:department)
     raise "Must set github_check_mfa_team setting!" unless check_mfa_team
     raise "Must set github_default_teams setting!" unless default_teams
 
@@ -83,7 +84,7 @@ class GithubUser < ActiveRecord::Base
     orgs.each do |org|
       unless github_admin.octokit.organization_member?(org, login)
         Rails.logger.info "Adding #{login} to organization #{org}."
-        team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
+	team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
         raise "Adding #{login} to organization #{org}." \
               "\nCannot find the team '#{check_mfa_team}' for #{org}" unless team
 
@@ -118,9 +119,14 @@ class GithubUser < ActiveRecord::Base
     # Check for failing rules
     valid_user = failing_rules.empty?
 
-    # Add to default teams
+    # Add to default and department teams
     if valid_user
       add_to_teams(default_teams)
+    end
+
+    if department.any? && valid_user
+       department_teams = get_department_teams(department)
+       add_to_teams(department_teams)
     end
 
     # Remove from the temporary MFA check team
@@ -132,6 +138,51 @@ class GithubUser < ActiveRecord::Base
     end
 
     valid_user
+  end
+
+  # Gets teams based on department from department yaml in an
+  #
+  # @return [Array<GithubTeam>]
+  def get_department_teams(department)
+    user_departments = department.map!(&:downcase)
+    user_department_teams = []
+    orgs = Rails.application.settings.github_orgs || []
+
+    # check if there is an engine in the vendor path
+    engines_path = "vendor/engines"
+    if Dir.exist?(engines_path) 
+      Dir.foreach(engines_path) do |engine_name|
+
+        # see if there is a department-teams.yml file in the config directory of the engine
+        if File.exists?(File.join('vendor', 'engines', engine_name, 'config', 'department-teams.yml'))
+
+          #Read in department teams yaml
+          department_teams = YAML.load(File.open(File.join('vendor', 'engines', engine_name, 'config', 'department-teams.yml')))
+
+          # if the file is read into YAML
+          if department_teams
+            # For ever org that the user is a member of
+            orgs.each do |org|
+              # Check if that org is a key in the department teams yaml
+              if department_teams.key?(org)
+                # For all departments that the user is in via LDAP
+                user_departments.each do |department|
+                  # Check if that department is a key in the department teams yaml [organization]
+                  if department_teams[org].key?(department)
+                    # Concatenate the list of all teams associated with that department from the yaml file
+                    user_department_teams.concat(department_teams[org][department])
+                  end
+                end
+              end
+            end
+          end
+
+        end
+      end
+    end
+
+    user_department_teams
+
   end
 
   # Adds the user to the given Github teams.
