@@ -64,6 +64,11 @@ GithubApp:
     app_id: 113412
     access_token: <% @data_bag_item('github-apps', 'github-token')['token'] %>
     private_key: <% @data_bag_item('github-apps', 'razorci-pem')['pem'] %>
+  commandci:
+    name: Commandci
+    app_id: 113412
+    access_token: <% @data_bag_item('github-apps', 'github-token')['token'] %>
+    private_key: <% @data_bag_item('github-apps', 'razorci-pem')['pem'] %>
   servicesci:
     name: Servicesci
     app_id: 113413
