@@ -81,14 +81,16 @@ node['github_connector']['engines'].each do |engine, attrs|
   end
 end
 
-# Create the yaml config for the github connector r7 extensions GithubApp info
-template "/vendor/engines/github_connector_r7_extensions/config/github_apps.yml" do
-  source 'github_apps.yml.erb'
-  mode 0644
-  owner node['github_connector']['user']
-  group node['github_connector']['group']
-  action :create
-  )
+# Create the yaml config for the github connector r7 extensions GithubApp info if extension exists
+if File.dir? "/vendor/engines/github_connector_r7_extensions"
+  template "/vendor/engines/github_connector_r7_extensions/config/github_apps.yml" do
+    source 'github_apps.yml.erb'
+    mode 0644
+    owner node['github_connector']['user']
+    group node['github_connector']['group']
+    action :create
+    )
+  end
 end
 
 
