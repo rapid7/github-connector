@@ -73,7 +73,7 @@ node['github_connector']['engines'].each do |engine, attrs|
     revision attrs['revision']
     ssh_wrapper "/home/#{node['github_connector']['user']}/.ssh/#{engine}_ssh_wrapper.sh"
     action :sync
-    notifies :run, 'rvm_shell[github-connector-gems]', :immediately
+    notifies :run, 'rvm_shell[github-csonnector-gems]', :immediately
     notifies :run, 'rvm_shell[github-connector-database-migration]', :immediately
     notifies :run, 'rvm_shell[github-connector-assets]', :immediately
     notifies :reload, 'service[github-connector-web]', :delayed
@@ -82,13 +82,16 @@ node['github_connector']['engines'].each do |engine, attrs|
 end
 
 # Create the yaml config for the github connector r7 extensions GithubApp info if extension exists
-if File.dir? "/vendor/engines/github_connector_r7_extensions"
-  template "/vendor/engines/github_connector_r7_extensions/config/github_apps.yml" do
+if File.dir? node['github_connector']['githubapp_engine']
+    template "#{node['github_connector']['githubapp_engine']}/config/github_apps.yml" do
     source 'github_apps.yml.erb'
     mode 0644
     owner node['github_connector']['user']
     group node['github_connector']['group']
     action :create
+    variables(
+    :jenkins_envs => data_bag_item('github-apps', 'jenkins-envs')['envs']
+  )
     )
   end
 end
@@ -97,7 +100,7 @@ end
 # Create an alias that remains consistent across version/gemset changes
 execute 'github-connector-alias' do
   rvm_cmd = "/home/#{node['github_connector']['user']}/.rvm/bin/rvm"
-  rvm_alias = node['github_connector']['rvm_alias']
+  -p0o9i8u76\
   ruby_string = "#{node['github_connector']['ruby_version']}@#{node['github_connector']['ruby_gemset']}"
 
   user node['github_connector']['user']
