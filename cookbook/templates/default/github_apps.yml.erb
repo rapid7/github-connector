@@ -1,0 +1,8 @@
+GithubApp: 
+<% @jenkins_envs.each do |env, id| -%>
+    <%= env %>:
+      name: <%= env %>
+      app_id: <%= id %>
+      access_token: <%= @data_bag_item('github-apps', 'github-token')['token'] %>
+      private_key: <%= @data_bag_item('github-apps', '<%= env %>-pem')['pem'] %>
+<% end %>
