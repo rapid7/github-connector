@@ -4,7 +4,7 @@ module SettingsMixin
   PASSWORD_PLACEHOLDER = '|||PWPLACEHOLDER|||'
 
   included do
-    before_filter :load_settings
+    before_action :load_settings
   end
 
   def scrub_password(key)

@@ -7,4 +7,3 @@ source "https://supermarket.getchef.com"
 cookbook 'rvm', '>= 0.9.0', git: 'git://github.com/rapid7-cookbooks/rvm.git', branch: 'patches_0.9.0'
 
 metadata
-

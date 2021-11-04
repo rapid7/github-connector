@@ -6,7 +6,7 @@ description      "Installs and configures the GitHub Active Directory Connector"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 source_url       "https://github.com/rapid7/github-connector/tree/master/cookbook"
 issues_url       "https://github.com/rapid7/github-connector/issues"
-version          "0.1.7"
+version          "0.2.0"
 
 supports 'ubuntu'
 

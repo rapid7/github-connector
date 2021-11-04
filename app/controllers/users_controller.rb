@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :load_user, except: [:index]
-  before_filter :require_admin, except: [:show]
-  before_filter :require_admin_or_user, only: [:show]
+  before_action :load_user, except: [:index]
+  before_action :require_admin, except: [:show]
+  before_action :require_admin_or_user, only: [:show]
 
   def index
     # TODO: Pagination

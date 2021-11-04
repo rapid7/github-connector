@@ -1,0 +1,4 @@
+FROM osixia/openldap
+ENV LDAP_ORGANISATION="Example Org" \
+    LDAP_DOMAIN="example.com"
+COPY ldap/base.ldif /container/service/slapd/assets/config/bootstrap/ldif/base.ldif

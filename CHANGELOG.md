@@ -1,6 +1,10 @@
 GitHub Connector CHANGELOG
 ==========================
 
+v0.2.0
+------
+- Upgrade everything!
+
 v0.1.5
 ------
 - Upgrade Octokit to latest version [#13]

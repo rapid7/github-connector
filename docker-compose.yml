@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+    - "5432:5432"
+  ldap:
+    build:
+      context: .
+      dockerfile: DockerfileLdap
+    environment:
+      LDAP_ADMIN_PASSWORD: test1234
+      LDAP_BASE_DN: dc=example,dc=com
+    ports:
+    - "389:389"
+    - "636:636"
+    - "3268:3268"
+    - "3269:3269"
+    volumes:
+      - ./tmp/ldap:/var/lib/ldap
+      - ./tmp/ldap/slapd.d:/etc/ldap/slapd.d
+  web:
+    build:
+      context: .
+      dockerfile: DockerfileWeb
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 5000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - ldap

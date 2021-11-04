@@ -1,27 +1,27 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.11.1'
+gem 'rails'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'compass-rails'
+gem 'coffee-rails'
+gem 'compass-rails', '~> 4.0.0'
 gem 'daemons'
 gem 'delayed_job_active_record'
-gem 'devise', '>= 3.4.0'
-gem 'devise_ldap_authenticatable', '> 0.8.1'
+gem 'devise'
+gem 'devise_ldap_authenticatable'
 gem 'friendly_id'
 gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'oauth2'
-gem 'octokit', '> 3.3.1'
+gem 'octokit'
 gem 'pg'
 gem 'puma'
 gem 'sanitize'
 gem 'sass-rails'
 gem 'state_machine'
 gem 'turbolinks'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 
 # Add local customizations via rails engines
 require 'pathname'
@@ -35,7 +35,7 @@ end
 group :development do
   gem 'foreman'
   gem 'spring'
-  gem 'therubyracer'
+  gem 'mini_racer'
   gem 'yard'
 end
 
@@ -46,5 +46,5 @@ end
 
 group :test do
   gem 'simplecov', :require => false
-  gem 'factory_girl_rails'
+  gem 'factory_bot'
 end

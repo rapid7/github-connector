@@ -1,6 +1,6 @@
 class GithubUsersController < ApplicationController
-  before_filter :load_github_user, except: [:index]
-  before_filter :require_admin
+  before_action :load_github_user, except: [:index]
+  before_action :require_admin
 
   def index
     # TODO: Pagination

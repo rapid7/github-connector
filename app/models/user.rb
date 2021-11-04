@@ -218,6 +218,6 @@ class User < ActiveRecord::Base
   end
 
   class << self
-    alias_method_chain :find_for_ldap_authentication, :normalize
+    alias_method :find_for_ldap_authentication, :normalize_ldap_username
   end
 end

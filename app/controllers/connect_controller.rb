@@ -2,7 +2,7 @@ require 'oauth2'
 
 class ConnectController < ApplicationController
   include GithubOauthConcern
-  before_filter :load_connect_status, only: [:status]
+  before_action :load_connect_status, only: [:status]
 
   def index
     @connect_status = ConnectGithubUserStatus.new(
