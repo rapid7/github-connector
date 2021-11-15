@@ -5,6 +5,23 @@ objectClass: organizationalUnit
 dc: example
 ou: example
 
+# Admin account
+dn: cn=Test Admin User,dc=example,dc=com
+objectclass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+displayName: Test Admin
+name: Test Admin User
+givenName: Test
+sn: Admin
+mail: test_admin@example.com
+userPrincipalName: test_admin@example.com
+userAccountControl: 510
+sAMAccountName: test_admin
+# userPassword: secret
+userPassword: {SSHA}fFjKcZb4cfOAcwSjJer8nCGOEVRUnwCC
+
 # Normal account
 dn: cn=Homer Simpson,dc=example,dc=com
 objectclass: top
