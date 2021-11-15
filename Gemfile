@@ -15,10 +15,10 @@ gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'oauth2'
 gem 'octokit', '> 3.3.1'
-gem 'pg'
+gem 'pg', '~> 0.15'
 gem 'puma'
 gem 'sanitize'
-gem 'sass-rails'
+gem 'sass-rails', '~> 5.0'
 gem 'state_machine'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
@@ -35,7 +35,6 @@ end
 group :development do
   gem 'foreman'
   gem 'spring'
-  gem 'therubyracer'
   gem 'yard'
 end
 
