@@ -16,6 +16,12 @@ ActiveRecord::Schema.define(version: 20210311145806) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
+    t.string   "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "connect_github_user_statuses", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "github_user_id"
