@@ -53,7 +53,7 @@ RSpec.describe SettingsController, :type => :controller do
     end
 
     it 'handles ldap errors' do
-      expect(ldap).to receive(:bind).and_raise(Net::LDAP::LdapError)
+      expect(ldap).to receive(:bind).and_raise(Net::LDAP::Error)
       expect(subject).to_not be_redirect
       expect(assigns(:error)).to_not be_nil
     end

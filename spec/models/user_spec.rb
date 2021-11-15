@@ -83,7 +83,7 @@ describe User do
     end
 
     it 'saves ldap errors during sync' do
-      expect(user).to receive(:ldap_get_param).and_raise(Net::LDAP::LdapError)
+      expect(user).to receive(:ldap_get_param).and_raise(Net::LDAP::Error)
       user.sync_from_ldap!
       expect(user.last_ldap_sync).to be_nil
       expect(user.ldap_sync_error).to_not be_nil
