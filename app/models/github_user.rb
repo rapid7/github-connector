@@ -371,8 +371,8 @@ class GithubUser < ActiveRecord::Base
     # Save results
     transaction do
       # Force associations reload just in case
-      emails(true)
-      org_memberships(true)
+      emails.reload
+      org_memberships.reload
 
       # Remove old email addresses
       removed = emails.select do |email|
