@@ -41,14 +41,16 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
-  config.include FactoryGirl::Syntax::Methods
-  config.include Devise::TestHelpers, type: :controller
-  config.include Devise::TestHelpers, type: :view
+  FactoryBot.find_definitions
+  config.include FactoryBot::Syntax::Methods
+
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
   config.include ControllerHelpers, type: :controller
 
   config.before(:suite) do
-    FactoryGirl.lint
-    DatabaseCleaner.clean_with(:deletion)
+    FactoryBot.lint
+    DatabaseCleaner.clean_with :deletion, except: %w(public.ar_internal_metadata)
   end
 
   DatabaseCleaner.strategy = :deletion

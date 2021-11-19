@@ -1,10 +1,10 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :github_user do
     sequence(:login) { |n| "githubber#{n}" }
 
     factory :github_user_with_emails do
       transient do
-        emails_count 2
+        emails_count { 2 }
       end
 
       after(:create) do |github_user, evaluator|
