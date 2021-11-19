@@ -10,7 +10,7 @@ RSpec.describe Setup::RulesController, :type => :controller do
   end
 
   describe "PUT 'update'" do
-    subject { put 'update', settings: {rule_max_sync_age: 60} }
+    subject { put 'update', params: { settings: { rule_max_sync_age: 60 }}}
 
     it 'saves settings' do
       subject

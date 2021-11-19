@@ -22,7 +22,7 @@ RSpec.describe Setup::LdapController, :type => :controller do
   end
 
   describe "PUT 'update'" do
-    subject { put 'update', settings: {ldap_host: 'foohost', ldap_port: 3389} }
+    subject { put 'update', params: { settings: { ldap_host: 'foohost', ldap_port: 3389 }}}
     let(:ldap) { double('ldap', bind: true).as_null_object }
 
     before do

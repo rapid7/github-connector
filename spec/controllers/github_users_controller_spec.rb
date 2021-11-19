@@ -18,8 +18,8 @@ RSpec.describe GithubUsersController, :type => :controller do
 
   describe "GET show" do
     it "returns http success" do
-      get :show, id: github_user.login
-      expect(response).to be_success
+      get :show, params: { id: github_user.login }
+      expect(response).to be_successful
     end
   end
 

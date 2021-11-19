@@ -23,7 +23,7 @@ RSpec.describe Setup::GithubController, :type => :controller do
 
   describe "PUT 'update'" do
     let(:settings) { {github_orgs: 'foocompany'} }
-    subject { put 'update', settings: settings }
+    subject { put 'update', params: { settings: settings }}
 
     it 'saves settings' do
       subject
@@ -33,7 +33,7 @@ RSpec.describe Setup::GithubController, :type => :controller do
     context 'with connect_github parameter' do
       it 'calls github_admin action' do
         expect(controller).to receive(:github_admin) { controller.redirect_to('foobar') }
-        put 'update', settings: settings, connect_github: 'connect'
+        put 'update', params: { settings: settings, connect_github: 'connect' }
       end
     end
   end

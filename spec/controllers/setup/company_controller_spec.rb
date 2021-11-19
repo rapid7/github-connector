@@ -10,7 +10,7 @@ RSpec.describe Setup::CompanyController, :type => :controller do
   end
 
   describe "PUT 'update'" do
-    subject { put 'update', settings: {company: 'foocompany'} }
+    subject { put 'update', params: { settings: { company: 'foocompany' }}}
 
     it 'saves settings' do
       subject

@@ -23,7 +23,7 @@ RSpec.describe Setup::EmailController, :type => :controller do
   end
 
   describe "PUT 'update'" do
-    subject { put 'update', settings: {smtp_address: 'localhost'} }
+    subject { put 'update', params: { settings: {smtp_address: 'localhost'} } }
 
     it 'saves settings' do
       subject
