@@ -146,7 +146,7 @@ class User < ActiveRecord::Base
       self.ldap_sync_error = nil
       self.department = ldap_get_single_param('department')
       save
-    rescue Net::LDAP::LdapError, Net::LDAP::PDU::Error => e
+    rescue Net::LDAP::Error, Net::LDAP::PDU::Error => e
       Rails.logger.error "Error syncing #{username} with Active Directory: #{e}"
       self.ldap_sync_error = e.message
       return save
