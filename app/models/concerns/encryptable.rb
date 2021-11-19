@@ -19,7 +19,7 @@ module Encryptable
       @crypt ||= begin
         salt = ENV[ENCRYPTED_DATABASE_SALT] || ''
         key_generator = ActiveSupport::KeyGenerator.new(Rails.application.secrets.database_key, iterations: 2000)
-        key = key_generator.generate_key(salt)
+        key = key_generator.generate_key(salt, 32)
         ActiveSupport::MessageEncryptor.new(key)
       end
     end
