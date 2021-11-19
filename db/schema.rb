@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20210311145806) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "connect_github_user_statuses", force: :cascade do |t|
+  create_table "connect_github_user_statuses", id: :serial, force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "github_user_id"
     t.string   "oauth_code"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20210311145806) do
     t.datetime "updated_at"
   end
 
-  create_table "delayed_jobs", force: :cascade do |t|
+  create_table "delayed_jobs", id: :serial, force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
     t.text     "handler",                null: false
@@ -39,31 +39,28 @@ ActiveRecord::Schema.define(version: 20210311145806) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index    ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
-
-  create_table "github_emails", force: :cascade do |t|
+  create_table "github_emails", id: :serial, force: :cascade do |t|
     t.integer  "github_user_id", null: false
     t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index    ["github_user_id"], name: "index_github_emails_on_github_user_id"
   end
-
-  add_index "github_emails", ["github_user_id"], name: "index_github_emails_on_github_user_id", using: :btree
-
-  create_table "github_organization_memberships", force: :cascade do |t|
+  
+  create_table "github_organization_memberships", id: :serial, force: :cascade do |t|
     t.integer  "github_user_id", null: false
     t.string   "organization",   null: false
     t.string   "role"
     t.string   "state"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index    ["github_user_id"], name: "index_github_organization_memberships_on_github_user_id"
   end
-
-  add_index "github_organization_memberships", ["github_user_id"], name: "index_github_organization_memberships_on_github_user_id", using: :btree
-
-  create_table "github_teams", force: :cascade do |t|
+  
+  create_table "github_teams", id: :serial, force: :cascade do |t|
     t.string   "slug"
     t.string   "organization"
     t.string   "name"
@@ -80,8 +77,8 @@ ActiveRecord::Schema.define(version: 20210311145806) do
     t.integer "github_user_id"
     t.integer "github_team_id"
   end
-
-  create_table "github_users", force: :cascade do |t|
+  
+  create_table "github_users", id: :serial, force: :cascade do |t|
     t.integer  "user_id"
     t.string   "login",                               null: false
     t.boolean  "mfa"
@@ -94,21 +91,19 @@ ActiveRecord::Schema.define(version: 20210311145806) do
     t.string   "state",           default: "unknown", null: false
     t.string   "avatar_url"
     t.string   "html_url"
+    t.index ["login"], name: "index_github_users_on_login", unique: true
+    t.index ["user_id"], name: "index_github_users_on_user_id"
   end
 
-  add_index "github_users", ["login"], name: "index_github_users_on_login", unique: true, using: :btree
-  add_index "github_users", ["user_id"], name: "index_github_users_on_user_id", using: :btree
-
-  create_table "settings", force: :cascade do |t|
+  create_table "settings", id: :serial, force: :cascade do |t|
     t.string   "key"
     t.text     "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["key"], name: "index_settings_on_key", unique: true
   end
-
-  add_index "settings", ["key"], name: "index_settings_on_key", unique: true, using: :btree
-
-  create_table "users", force: :cascade do |t|
+  
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string   "username",             default: "", null: false
     t.string   "name"
     t.datetime "remember_created_at"
@@ -127,8 +122,6 @@ ActiveRecord::Schema.define(version: 20210311145806) do
     t.boolean  "admin"
     t.string   "remember_token"
     t.string   "department"
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
-
-  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
-
 end
