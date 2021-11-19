@@ -5,7 +5,7 @@ RSpec.describe Setup::GithubController, :type => :controller do
   describe "GET 'edit'" do
     it "returns http success" do
       get 'edit'
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'sets default orgs' do

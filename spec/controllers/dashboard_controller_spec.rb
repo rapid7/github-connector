@@ -9,7 +9,7 @@ RSpec.describe DashboardController, :type => :controller do
   describe "GET 'index'" do
     it "returns http success" do
       get 'index'
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'redirects to setup wizard if application is not configured' do
@@ -21,7 +21,7 @@ RSpec.describe DashboardController, :type => :controller do
     it 'returns a http error if an LDAP authentication error occurs' do
       allow(controller).to receive(:index).and_raise(DeviseLdapAuthenticatable::LdapException)
       get 'index'
-      expect(response).to be_error
+      expect(response).to have_http_status(500)
     end
   end
 
