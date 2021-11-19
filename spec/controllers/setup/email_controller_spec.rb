@@ -9,6 +9,7 @@ RSpec.describe Setup::EmailController, :type => :controller do
     end
 
     it 'sets default email from company name' do
+      request.set_header("HTTP_HOST", 'localhost')
       allow(request).to receive(:host).and_return('localhost')
       Rails.application.settings.company = 'Example Corp'
       get 'edit'
@@ -16,6 +17,7 @@ RSpec.describe Setup::EmailController, :type => :controller do
     end
 
     it 'sets default email from url domain' do
+      request.set_header("HTTP_HOST", 'foocorp.com')
       allow(request).to receive(:host).and_return('foocorp.com')
       get 'edit'
       expect(assigns(:settings).email_from).to eq('github@foocorp.com')

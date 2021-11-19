@@ -15,7 +15,7 @@ RSpec.describe Setup::LdapController, :type => :controller do
     end
 
     it 'sets development defaults for localhost' do
-      allow(request).to receive(:host).and_return('localhost')
+      request.set_header("HTTP_HOST", 'localhost')
       get 'edit'
       expect(assigns(:settings).ldap_base).to eq('dc=example,dc=com')
     end
