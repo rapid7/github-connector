@@ -7,7 +7,7 @@ module ActionMailer
       Rails.application.settings.apply_to_action_mailer
       initialize_without_config(*args)
     end
-    alias_method_chain :initialize, :config
+    alias_method :initialize, :config
 
   end
 end
