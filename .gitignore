@@ -13,3 +13,5 @@
 /vendor/bundle
 /vendor/engines
 /.yardoc
+.bash_history
+.irb_history
