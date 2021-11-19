@@ -48,11 +48,13 @@ class ConnectController < ApplicationController
   def load_connect_status
     @connect_status = ConnectGithubUserStatus.find(params[:id])
 
-    if @connect_status.user_id != current_user.id
-      render :status => :forbidden, :text => 'Forbidden'
-      return false
-    end
+    return true unless @connect_status.user_id != current_user.id
 
-    true
+    # respond_to do |format|
+      # format.html #{ render status: :forbidden, text: 'Forbidden' }
+      # format.html { render :index, status: :forbidden, text: 'Forbidden' }
+    # end
+    render :index, status: :forbidden, text: 'Forbidden'
+    false
   end
 end
