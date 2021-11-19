@@ -375,6 +375,8 @@ describe GithubUser do
     it 'sends an access revoked mail' do
       Rails.application.settings.enforce_rules = true
       expect(UserMailer).to receive(:access_revoked).and_return(mail)
+      expect(mail).to receive(:deliver_later)
+
       user.send(:do_notify_disabled, transition)
     end
 
@@ -423,6 +425,7 @@ describe GithubUser do
     it 'sends an access revoked mail' do
       Rails.application.settings.enforce_rules = true
       expect(UserMailer).to receive(:access_revoked).and_return(mail)
+      expect(mail).to receive(:deliver_later)
       user.send(:do_notify_restricted, transition)
     end
 
