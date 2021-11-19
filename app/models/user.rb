@@ -164,12 +164,16 @@ class User < ActiveRecord::Base
 
   private
 
+  class << self
+    alias_method :find_for_ldap_authentication_without_normalize, :find_for_ldap_authentication
+  end
+
   # Finds the User using the normalized ldap username.
   #
   # @param attributes [Hash] Devise attributes
   # @return User
   # @see normalize_ldap_username
-  def self.find_for_ldap_authentication_with_normalize(attributes={})
+  def self.find_for_ldap_authentication(attributes={})
     auth_key = self.authentication_keys.first
     return nil unless attributes[auth_key].present?
 
@@ -215,9 +219,5 @@ class User < ActiveRecord::Base
     username = ldap_entry['sAMAccountName']
     username = username.first if username.is_a?(Enumerable)
     username
-  end
-
-  class << self
-    alias_method_chain :find_for_ldap_authentication, :normalize
   end
 end

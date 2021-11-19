@@ -5,7 +5,7 @@ class ConnectGithubUserJob < ActiveJob::Base
   def perform(connect_status)
     @connect_status = connect_status
 
-    @connect_status.update_attributes!(
+    @connect_status.update!(
       status: :running,
       step: :grant
     )
@@ -15,21 +15,21 @@ class ConnectGithubUserJob < ActiveJob::Base
       @github_user = oauth_process_auth_code
     rescue OAuth2::Error => e
       Rails.logger.warn "Cannot establish OAuth token: #{e.message}"
-      @connect_status.update_attributes!(
+      @connect_status.update!(
         status: :error,
         error_message: e.description
       )
       return
     end
 
-    @connect_status.update_attributes!(
+    @connect_status.update!(
       step: :add,
       github_user: @github_user
     )
 
     # Add to organizations
     unless @github_user.add_to_organizations
-      @connect_status.update_attributes!(
+      @connect_status.update!(
         status: :error
       )
       return
@@ -39,14 +39,14 @@ class ConnectGithubUserJob < ActiveJob::Base
     @github_user.enable if @github_user.can_enable?
 
     # Mark complete
-    @connect_status.update_attributes!(
+    @connect_status.update!(
       status: :complete,
       step: :teams
     )
 
   rescue => e
     Rails.logger.error "Error running ConnectGithubUserJob: #{e}\n\t#{e.backtrace.join("\n\t")}"
-    @connect_status.update_attributes!(
+    @connect_status.update!(
       status: :error,
       error_message: e.message
     )
