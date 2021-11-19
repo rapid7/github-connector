@@ -1,16 +1,15 @@
 require "rails_helper"
 
-RSpec.describe UserMailer, :type => :mailer do
+RSpec.describe UserMailer, type: :mailer do
 
   before do
     Rails.application.settings.email_base_url = 'http://localhost:3000'
   end
 
   describe '#access_revoked' do
-    subject(:mail) { UserMailer.access_revoked(user, github_user) }
-
-    let(:user) { build(:user) }
-    let(:github_user) { build(:github_user, user: user) }
+    subject(:mail) { described_class.access_revoked(user, github_user) }
+    let(:user) { create(:user) }
+    let(:github_user) { create(:github_user, user: user) }
 
     it 'renders subject' do
       expect(mail.subject).to eq('GitHub Access Revoked')
