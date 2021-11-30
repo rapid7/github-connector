@@ -1,0 +1,5 @@
+FROM osixia/openldap
+ENV LDAP_ORGANISATION="Example Org" \
+    LDAP_DOMAIN="example.com"
+
+EXPOSE 3268 3269
