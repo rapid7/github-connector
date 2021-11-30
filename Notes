@@ -3,6 +3,11 @@ Notes
 https://docs.docker.com/samples/rails/
 https://betterprogramming.pub/ldap-docker-image-with-populated-users-3a5b4d090aa4
 
+# Config
+- Copy / Rename config/database.yml.docker to config/database.yml
+- Copy / Rename config/secrets.yml.example to config/secrets.yml
+- Copy / Rename config/ldap.yml.docker to config/ldap.yml
+
 # Start the services
 docker-compose run --no-deps web rails new . --force --database=postgresql
 
