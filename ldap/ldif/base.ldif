@@ -1,0 +1,84 @@
+# Admin account
+dn: cn=Test Admin User,dc=example,dc=com
+objectclass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+displayName: Test Admin
+name: Test Admin User
+givenName: Test
+sn: Admin
+mail: test_admin@example.com
+userPrincipalName: test_admin@example.com
+userAccountControl: 510
+sAMAccountName: testadmin
+# userPassword: secret
+userPassword: {SSHA}fFjKcZb4cfOAcwSjJer8nCGOEVRUnwCC
+
+# Normal account
+dn: cn=Homer Simpson,dc=example,dc=com
+objectclass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+displayName: Homer Simpson
+name: Homer Simpson
+givenName: Homer
+sn: Simpson
+mail: Homer_Simpson@example.com
+userPrincipalName: hsimpson@example.com
+userAccountControl: 512
+sAMAccountName: hsimpson
+# userPassword: 123456
+userPassword: {SSHA}1j5ho2mHI6fHgwQOjBk9aRHF47FzYWx0
+
+# Locked account
+dn: cn=Marge Simpson,dc=example,dc=com
+objectclass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+displayName: Homer Simpson
+name: Marge Simpson
+givenName: Marge
+sn: Simpson
+mail: Marge_Simpson@example.com
+userPrincipalName: msimpson@example.com
+userAccountControl: 528
+sAMAccountName: msimpson
+# userPassword: 123456
+userPassword: {SSHA}1j5ho2mHI6fHgwQOjBk9aRHF47FzYWx0
+
+# Disabled account
+dn: cn=Bart Simpson,dc=example,dc=com
+objectclass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+displayName: Homer Simpson
+name: Bart Simpson
+givenName: Bart
+sn: Simpson
+mail: Bart_Simpson@example.com
+userPrincipalName: bsimpson@example.com
+userAccountControl: 514
+sAMAccountName: bsimpson
+# userPassword: 123456
+userPassword: {SSHA}1j5ho2mHI6fHgwQOjBk9aRHF47FzYWx0
+
+# Password expired
+dn: cn=Lisa Simpson,dc=example,dc=com
+objectclass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+displayName: Homer Simpson
+name: Lisa Simpson
+givenName: Lisa
+sn: Simpson
+mail: Lisa_Simpson@example.com
+userPrincipalName: lsimpson@example.com
+userAccountControl: 8389120
+sAMAccountName: lsimpson
+# userPassword: 123456
+userPassword: {SSHA}1j5ho2mHI6fHgwQOjBk9aRHF47FzYWx0
