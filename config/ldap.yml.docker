@@ -1,0 +1,8 @@
+development:
+  host: localhost 
+  port: 389
+  attribute: cn
+  base: dc=example,dc=com
+  admin_user: cn=admin,dc=example,dc=com
+  admin_password: test1234
+  ssl: none

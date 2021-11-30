@@ -1,6 +1,7 @@
 /.bundle
 /cookbook/.kitchen
 /config/database.yml
+/config/ldap.yml
 /config/secrets.yml
 /coverage
 /doc
