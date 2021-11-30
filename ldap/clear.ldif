@@ -10,5 +10,8 @@ changetype: delete
 dn: cn=Homer Simpson,dc=example,dc=com
 changetype: delete
 
+dn: cn=Test Admin User,dc=example,dc=com
+changetype: delete
+
 dn: dc=example,dc=com
 changetype: delete
