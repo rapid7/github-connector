@@ -1,0 +1,28 @@
+Notes
+=======
+https://docs.docker.com/samples/rails/
+https://betterprogramming.pub/ldap-docker-image-with-populated-users-3a5b4d090aa4
+
+# Start the services
+docker-compose run --no-deps web rails new . --force --database=postgresql
+
+docker-compose build
+
+docker-compose up
+
+# Populate the Postgres DB
+docker-compose run web rake db:create db:migrate
+
+# Populate the LDAP server
+docker exec -it github-connector_ldap_1 /bin/sh
+
+ldapsearch -x -H ldap://localhost -D 'cn=admin,dc=example,dc=com' -b dc=example,dc=com -w test1234
+
+ldapadd -x -H ldap://localhost -D 'cn=admin,dc=example,dc=com' -w test1234 -f /container/service/slapd/assets/config/bootstrap/ldif/base.ldif
+
+Todo
+=======
+Write script to fire all this up locally
+Test and make sure can test this correctly locally
+Package all together and push to a branch
+Discuss next steps - ges account?
