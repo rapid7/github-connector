@@ -1,10 +1,3 @@
-
-dn: dc=example,dc=com
-objectClass: dcObject
-objectClass: organizationalUnit
-dc: example
-ou: example
-
 # Admin account
 dn: cn=Test Admin User,dc=example,dc=com
 objectclass: top

@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+  ldap:
+    build:
+      context: .
+      dockerfile: DockerfileLdap
+    environment:
+      LDAP_ADMIN_PASSWORD: test1234
+      LDAP_BASE_DN: dc=example,dc=com
+      LDAP_LOG_LEVEL: 256
+    ports:
+    - "389:389"
+    - "636:636"
+    - "3268:3268"
+    - "3269:3269"
+    volumes:
+    - ldap_data:/var/lib/ldap
+    - ldap_config:/etc/ldap/slapd.d
+    - ./ldap/ldif:/container/service/slapd/assets/config/bootstrap/ldif/
+    - ./ldap/schema:/container/service/slapd/assets/config/bootstrap/schema/
+    command: --copy-service --loglevel debug
+  web:
+    build:
+      context: .
+      dockerfile: DockerfileWeb
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 5000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - ldap
+volumes:
+  ldap_data:
+  ldap_config:

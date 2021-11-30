@@ -5,7 +5,7 @@ RSpec.describe Setup::LdapController, :type => :controller do
   describe "GET 'edit'" do
     it "returns http success" do
       get 'edit'
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'redirects to settings if application is already configured' do
@@ -15,14 +15,14 @@ RSpec.describe Setup::LdapController, :type => :controller do
     end
 
     it 'sets development defaults for localhost' do
-      allow(request).to receive(:host).and_return('localhost')
+      request.set_header("HTTP_HOST", 'localhost')
       get 'edit'
       expect(assigns(:settings).ldap_base).to eq('dc=example,dc=com')
     end
   end
 
   describe "PUT 'update'" do
-    subject { put 'update', settings: {ldap_host: 'foohost', ldap_port: 3389} }
+    subject { put 'update', params: { settings: { ldap_host: 'foohost', ldap_port: 3389 }}}
     let(:ldap) { double('ldap', bind: true).as_null_object }
 
     before do

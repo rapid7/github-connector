@@ -1,4 +1,4 @@
-class AddConnectGithubUserStatuses < ActiveRecord::Migration
+class AddConnectGithubUserStatuses < ActiveRecord::Migration[4.2]
   def change
     create_table(:connect_github_user_statuses) do |t|
       t.belongs_to :user

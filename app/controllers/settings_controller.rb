@@ -2,8 +2,8 @@ class SettingsController < ApplicationController
   include SettingsMixin
   include GithubOauthConcern
   include GithubSettingsMixin
-  before_filter :require_admin
-  before_filter :set_section_partials
+  before_action :require_admin
+  before_action :set_section_partials
 
   def edit
   end

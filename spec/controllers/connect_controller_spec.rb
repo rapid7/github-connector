@@ -17,7 +17,7 @@ RSpec.describe ConnectController, :type => :controller do
   describe "GET 'index'" do
     it "returns http success" do
       get 'index'
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'sets a new ConnectGithubUserStatus' do
@@ -32,15 +32,15 @@ RSpec.describe ConnectController, :type => :controller do
     let(:connect_status) { ConnectGithubUserStatus.create(user: user) }
 
     it 'returns http success' do
-      get 'status', id: connect_status.id
-      expect(response).to be_success
+      get 'status', params: { id: connect_status.id }
+      expect(response).to be_successful
     end
 
     context 'with another user' do
       let(:connect_status) { ConnectGithubUserStatus.create(user: create(:user)) }
 
       it 'returns http forbidden' do
-        get 'status', id: connect_status.id
+        get 'status', params: { id: connect_status.id }
         expect(response).to be_forbidden
       end
     end
@@ -86,7 +86,7 @@ RSpec.describe ConnectController, :type => :controller do
   end
 
   describe "GET 'auth_code'" do
-    subject { get :auth_code, code: code, state: state }
+    subject { get :auth_code, params: { code: code, state: state }}
     let(:state) { 'foostate' }
     let(:code) { 'foocode' }
     #let(:oauth) { double('oauth', auth_code: double(get_token: oauth_token)) }

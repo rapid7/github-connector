@@ -1,6 +1,7 @@
 /.bundle
 /cookbook/.kitchen
 /config/database.yml
+/config/ldap.yml
 /config/secrets.yml
 /coverage
 /doc
@@ -13,3 +14,5 @@
 /vendor/bundle
 /vendor/engines
 /.yardoc
+.bash_history
+.irb_history

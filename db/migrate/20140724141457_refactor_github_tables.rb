@@ -1,4 +1,4 @@
-class RefactorGithubTables < ActiveRecord::Migration
+class RefactorGithubTables < ActiveRecord::Migration[4.2]
   def change
     rename_table :teams, :github_teams
     rename_table :user_teams, :github_user_teams

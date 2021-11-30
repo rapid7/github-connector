@@ -11,7 +11,7 @@ RSpec.describe Setup::AdminUserController, :type => :controller do
   describe "GET 'new'" do
     it "returns http success" do
       get 'new'
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'signs out existing users' do
@@ -22,7 +22,7 @@ RSpec.describe Setup::AdminUserController, :type => :controller do
   end
 
   describe "POST 'create'" do
-    subject { post 'create', user: {username: user.username, password: 'foopass'} }
+    subject { post 'create', params: { user: { username: user.username, password: 'foopass' }}}
 
     it 'sets the admin user' do
       allow(controller.warden).to receive(:authenticate!).and_return(user)

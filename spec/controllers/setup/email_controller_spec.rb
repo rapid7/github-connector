@@ -5,10 +5,11 @@ RSpec.describe Setup::EmailController, :type => :controller do
   describe "GET 'edit'" do
     it "returns http success" do
       get 'edit'
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'sets default email from company name' do
+      request.set_header("HTTP_HOST", 'localhost')
       allow(request).to receive(:host).and_return('localhost')
       Rails.application.settings.company = 'Example Corp'
       get 'edit'
@@ -16,6 +17,7 @@ RSpec.describe Setup::EmailController, :type => :controller do
     end
 
     it 'sets default email from url domain' do
+      request.set_header("HTTP_HOST", 'foocorp.com')
       allow(request).to receive(:host).and_return('foocorp.com')
       get 'edit'
       expect(assigns(:settings).email_from).to eq('github@foocorp.com')
@@ -23,7 +25,7 @@ RSpec.describe Setup::EmailController, :type => :controller do
   end
 
   describe "PUT 'update'" do
-    subject { put 'update', settings: {smtp_address: 'localhost'} }
+    subject { put 'update', params: { settings: {smtp_address: 'localhost'} } }
 
     it 'saves settings' do
       subject

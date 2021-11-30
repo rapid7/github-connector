@@ -15,12 +15,12 @@ RSpec.describe SettingsController, :type => :controller do
   describe "GET 'edit'" do
     it "returns http success" do
       get 'edit'
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
   describe "PUT 'update'" do
-    subject { put 'update', settings: settings }
+    subject { put 'update', params: { settings: settings } }
     let(:ldap) { double('ldap', bind: true).as_null_object }
     let(:settings) {{
       ldap_host: 'foohost',
@@ -53,7 +53,7 @@ RSpec.describe SettingsController, :type => :controller do
     end
 
     it 'handles ldap errors' do
-      expect(ldap).to receive(:bind).and_raise(Net::LDAP::LdapError)
+      expect(ldap).to receive(:bind).and_raise(Net::LDAP::Error)
       expect(subject).to_not be_redirect
       expect(assigns(:error)).to_not be_nil
     end
@@ -61,7 +61,7 @@ RSpec.describe SettingsController, :type => :controller do
     context 'with connect_github parameter' do
       it "calls github_admin action" do
         expect(controller).to receive(:github_admin) { controller.redirect_to('foobar') }
-        put 'update', settings: settings, connect_github: 'connect'
+        put 'update', params: { settings: settings, connect_github: 'connect' }
       end
     end
   end
@@ -108,7 +108,7 @@ RSpec.describe SettingsController, :type => :controller do
   end
 
   describe "GET 'github_auth_code'" do
-    subject { get :github_auth_code, state: state }
+    subject { get :github_auth_code, params: { state: state } }
     let(:state) { 'foostate' }
     let(:oauth) { double('oauth', auth_code: double(get_token: oauth_token)) }
     let(:oauth_token) { double('oauth_token', token: 'footoken') }

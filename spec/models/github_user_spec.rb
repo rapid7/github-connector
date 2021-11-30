@@ -375,6 +375,8 @@ describe GithubUser do
     it 'sends an access revoked mail' do
       Rails.application.settings.enforce_rules = true
       expect(UserMailer).to receive(:access_revoked).and_return(mail)
+      expect(mail).to receive(:deliver_later)
+
       user.send(:do_notify_disabled, transition)
     end
 
@@ -423,6 +425,7 @@ describe GithubUser do
     it 'sends an access revoked mail' do
       Rails.application.settings.enforce_rules = true
       expect(UserMailer).to receive(:access_revoked).and_return(mail)
+      expect(mail).to receive(:deliver_later)
       user.send(:do_notify_restricted, transition)
     end
 
@@ -483,7 +486,7 @@ describe GithubUser do
 
         describe '#disable' do
           it 'calls do_disable' do
-            expect(user).to receive(:do_disable).with(kind_of(StateMachine::Transition))
+            expect(user).to receive(:do_disable).with(kind_of(StateMachines::Transition))
             user.disable
           end
 
@@ -495,20 +498,20 @@ describe GithubUser do
 
           it 'calls do_notify_disabled with failing notify rules' do
             allow_any_instance_of(MockRule).to receive(:notify?).and_return(true)
-            expect(user).to receive(:do_notify_disabled).with(kind_of(StateMachine::Transition))
+            expect(user).to receive(:do_notify_disabled).with(kind_of(StateMachines::Transition))
             user.disable
           end
 
           it 'does not call do_notify_disabled without failing notify rules' do
             allow_any_instance_of(MockRule).to receive(:notify?).and_return(false)
-            expect(user).to_not receive(:do_notify_disabled).with(kind_of(StateMachine::Transition))
+            expect(user).to_not receive(:do_notify_disabled).with(kind_of(StateMachines::Transition))
             user.disable
           end
         end
 
         describe '#restrict' do
           it 'calls do_restrict' do
-            expect(user).to receive(:do_restrict).with(kind_of(StateMachine::Transition))
+            expect(user).to receive(:do_restrict).with(kind_of(StateMachines::Transition))
             user.restrict
           end
 
@@ -520,13 +523,13 @@ describe GithubUser do
 
           it 'calls do_notify_restricted with failing notify rules' do
             allow_any_instance_of(MockRule).to receive(:notify?).and_return(true)
-            expect(user).to receive(:do_notify_restricted).with(kind_of(StateMachine::Transition))
+            expect(user).to receive(:do_notify_restricted).with(kind_of(StateMachines::Transition))
             user.restrict
           end
 
           it 'does not call do_notify_restricted without failing notify rules' do
             allow_any_instance_of(MockRule).to receive(:notify?).and_return(false)
-            expect(user).to_not receive(:do_notify_restricted).with(kind_of(StateMachine::Transition))
+            expect(user).to_not receive(:do_notify_restricted).with(kind_of(StateMachines::Transition))
             user.restrict
           end
         end
@@ -583,7 +586,7 @@ describe GithubUser do
 
         describe '#enable' do
           it 'calls do_enable' do
-            expect(user).to receive(:do_enable).with(kind_of(StateMachine::Transition))
+            expect(user).to receive(:do_enable).with(kind_of(StateMachines::Transition))
             user.transition
           end
         end

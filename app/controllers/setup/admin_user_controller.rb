@@ -1,6 +1,6 @@
 class Setup::AdminUserController < Devise::SessionsController
   include SetupMixin
-  prepend_before_filter :sign_out_if_signed_in, only: [:new]
+  prepend_before_action :sign_out_if_signed_in, only: [:new]
 
   def create
     super do |resource|

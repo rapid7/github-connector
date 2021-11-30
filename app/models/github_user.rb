@@ -84,7 +84,7 @@ class GithubUser < ActiveRecord::Base
     orgs.each do |org|
       unless github_admin.octokit.organization_member?(org, login)
         Rails.logger.info "Adding #{login} to organization #{org}."
-	team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
+        team = GithubTeam.find_by_full_slug("#{org}/#{check_mfa_team}")
         raise "Adding #{login} to organization #{org}." \
               "\nCannot find the team '#{check_mfa_team}' for #{org}" unless team
 
@@ -371,8 +371,8 @@ class GithubUser < ActiveRecord::Base
     # Save results
     transaction do
       # Force associations reload just in case
-      emails(true)
-      org_memberships(true)
+      emails.reload
+      org_memberships.reload
 
       # Remove old email addresses
       removed = emails.select do |email|

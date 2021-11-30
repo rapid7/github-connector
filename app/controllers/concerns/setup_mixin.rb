@@ -2,8 +2,8 @@ module SetupMixin
   extend ActiveSupport::Concern
 
   included do
-    skip_before_filter :authenticate_user!
-    before_filter :check_configured
+    skip_before_action :authenticate_user!
+    before_action :check_configured
   end
 
   private
