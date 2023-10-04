@@ -1,0 +1,16 @@
+---
+info:
+  title: Github Connector
+  description: The GitHub Active Directory Connector allows managing GitHub organizations
+    with Active Directory.
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/github-connector
+  x-cortex-tag: github-connector
+  x-cortex-type: service
+  x-cortex-domain-parents:
+  - tag: platform-delivery
+openapi: 3.0.1
+servers:
+- url: "/"
