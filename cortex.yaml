@@ -10,7 +10,7 @@ info:
   x-cortex-tag: github-connector
   x-cortex-type: service
   x-cortex-domain-parents:
-  - tag: platform-delivery
+  - tag: pd-services
 openapi: 3.0.1
 servers:
 - url: "/"
